@@ -10,12 +10,15 @@ Risk game made with C++ for Data structures and Algorithms implementation.
 git config --global user.name "Your name"
 git config --global user.email "Your email"
 
-# input for linux - true for windows
+# input for linux / true for windows (not recommended)
 git config --global core.autocrlf input
+
+# you can use any other editor
+git config --global core.editor code
 ```
 * Create an SSH key
 ```bash
-# Press enter until generated
+# Press enter until generated (unless you know what you're doing)
 ssh-keygen -t ed25519 -C "your_email@domain.com"
 
 # Get your public key
@@ -25,12 +28,15 @@ cat ~/.ssh/id_ed25519.pub
 
 ## How to contribute to this repo
 
+**_NOTE:_** Every <> symbol should be removed and replaced with your case information, files or messages. 
+However, every "" symbol should be kept.
+
 ### Clone (or update) the repo
 If is the first time working with the repo, clone it
 ```bash
 git clone git@github.com:NicolasMonta1807/risk-cpp.git
 ```
-¡¡¡ If you are going to work on a new task, update the previous changes in advance !!!
+:warning: **Before you work on a new task**: Update the repo 
 ```bash
 git fetch
 git pull
