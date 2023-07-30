@@ -11,18 +11,18 @@ int initialize()
 
 int initializeFromFile(string filename)
 {
-  cout << "Initializing from file..." << endl;
+  cout << "Initializing from file: " << filename << endl;
   return 0;
 }
 
 int save(string filename)
 {
-  cout << "Saving to..." << endl;
+  cout << "Saving to: " << filename << endl;
   return 0;
 }
 
 int compressedSave(string filename)
 {
-  cout << "Saving compressed t..." << endl;
+  cout << "Saving compressed to: " << filename << endl;
   return 0;
 }

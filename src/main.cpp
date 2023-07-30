@@ -1,7 +1,22 @@
-#include <stdio.h>
+#include <iostream>
+#include "Commands.h"
+
+using namespace std;
 
 int main()
 {
-  // TODO: Create placeholder interaction menu
-  return 0;
+  string userInput;
+
+  while (true)
+  {
+    cout << "risk> ";
+    getline(cin, userInput);
+
+    if (handleCommand(userInput) == -1)
+    {
+      cout << "Invalid command: " << userInput << endl;
+      cout << "Type 'help' for a list of commands." << endl;
+    }
+    continue;
+  }
 }
