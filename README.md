@@ -80,5 +80,17 @@ In order to merge your changes with the main branch, that is to accept your chan
 
 - [Creating a Github PR](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
 
+## Compiling
+Since this is a modular component-based project, for now, we will be using g++ as compiling tool
+```bash
+g++ -I include/ src/*.cpp -o main
+```
+The "main" parameter can be changed to whatever output name file you like
+
+If you want to use debugging tools, such as GDB, you should add the proper flag
+```bash
+g++ -I include/ src/*.cpp -g -o main
+```
+
 
 
