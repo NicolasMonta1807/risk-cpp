@@ -9,19 +9,19 @@ int initialize()
   return 0;
 }
 
-int initializeFromFile()
+int initializeFromFile(string filename)
 {
   cout << "Initializing from file..." << endl;
   return 0;
 }
 
-int save()
+int save(string filename)
 {
   cout << "Saving to..." << endl;
   return 0;
 }
 
-int compressedSave()
+int compressedSave(string filename)
 {
   cout << "Saving compressed t..." << endl;
   return 0;
