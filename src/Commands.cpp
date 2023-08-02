@@ -11,7 +11,7 @@ int handleCommand(string command)
 {
   string filename;
   string other;
-
+  string id;
   istringstream iss(command);
   iss >> command;
 
@@ -71,6 +71,20 @@ int handleCommand(string command)
     }
   }
 
+  if(command == "turn"){
+    if(iss >> id)
+    {
+      if (iss >> other)
+      {
+        return -1;
+      }
+      return initializeTurn(id);
+    }
+    else
+    {
+      cout << "Usage: turn <player ID>" <<endl;
+    }
+  }
   return -1;
 }
 
