@@ -71,8 +71,9 @@ int handleCommand(string command)
     }
   }
 
-  if(command == "turn"){
-    if(iss >> id)
+  if (command == "turn")
+  {
+    if (iss >> id)
     {
       if (iss >> other)
       {
@@ -82,7 +83,7 @@ int handleCommand(string command)
     }
     else
     {
-      cout << "Usage: turn <player ID>" <<endl;
+      cout << "Usage: turn <player ID>" << endl;
     }
   }
   return -1;
@@ -90,6 +91,17 @@ int handleCommand(string command)
 
 int help(string command)
 {
-  // TODO: Create help outputs for each command
+  cout << "Usage: command [options]" << endl
+       << endl;
+  cout << "\tCommand \t Meaning" << endl;
+  cout << "\tinitialize \tCreate and configure a new game" << endl;
+  cout << "\tinitialize <filename> \tLoad a game from a file" << endl;
+  cout << "\tsave <filename> \tSave the current game to a file" << endl;
+  cout << "\tcompressed_save <filename> \tSave the current game to a file" << endl;
+  cout << "\tturn <player ID> \tStart a new turn for a player" << endl;
+  cout << "\thelp \tShow this message" << endl;
+
+  // TODO: Add help for each command
+
   return 0;
 }
