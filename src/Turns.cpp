@@ -5,17 +5,22 @@ using namespace std;
 
 int initializeTurn(string playerID)
 {
-    int option;
+    int option = 0;
     string territory;
     int cost;
-    cout << "It should be this player's turn: " << playerID << "Who gets a number of soldiers this turn" << endl;
+
+    cout << "It should be this player's turn: " << playerID << " Who gets a number of soldiers this turn" << endl;
     cout << "That then has to allocate those soldiers" << endl;
+
     while (option != 4)
     {
         turnsMenu();
         cout << "Type the number of the option you choose: ";
         cin >> option;
+        cin.ignore();
+
         cout << endl;
+
         switch (option)
         {
         case 1:
@@ -47,11 +52,13 @@ int conquestCost(string territory)
     cout << "This should show the cost for conquering this territory: " << territory << endl;
     return 0;
 }
+
 int cheapestConquest()
 {
     cout << "In here this should tell the player what the cheapest conquest possible is, alongside the cost" << endl;
     return 0;
 }
+
 void turnsMenu()
 {
     cout << "1. Attack!" << endl;
