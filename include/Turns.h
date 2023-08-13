@@ -1,6 +1,6 @@
 #include <string>
 
-int initializeTurn(std::string playerID);
+int initializeTurn(int playerID);
 int conquestCost(std::string territory);
 int cheapestConquest();
 void turnsMenu();

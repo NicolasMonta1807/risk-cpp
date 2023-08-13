@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int initializeTurn(string playerID)
+int initializeTurn(int playerID)
 {
     int option = 0;
     string territory;

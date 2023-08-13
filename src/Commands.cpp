@@ -11,7 +11,7 @@ int handleCommand(string command)
 {
   string filename;
   string other;
-  string id;
+  int id;
   istringstream iss(command);
   iss >> command;
 
@@ -52,6 +52,7 @@ int handleCommand(string command)
     else
     {
       cout << "Usage: save <filename>" << endl;
+      return 0;
     }
   }
 
@@ -68,6 +69,7 @@ int handleCommand(string command)
     else
     {
       cout << "Usage: compressed_save <filename>" << endl;
+      return 0;
     }
   }
 
@@ -84,6 +86,7 @@ int handleCommand(string command)
     else
     {
       cout << "Usage: turn <player ID>" << endl;
+      return 0;
     }
   }
   return -1;
