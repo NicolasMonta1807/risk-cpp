@@ -1,10 +1,12 @@
 #include <iostream>
+#include "Game.h"
 #include "Commands.h"
 
 using namespace std;
 
 int main()
 {
+  Game game = Game();
   string userInput;
 
   while (true)
@@ -12,7 +14,7 @@ int main()
     cout << "risk> ";
     getline(cin, userInput);
 
-    if (handleCommand(userInput) == -1)
+    if (handleCommand(game, userInput) == -1)
     {
       cout << "Invalid command: " << userInput << endl;
       cout << "Type 'help' for a list of commands." << endl;

@@ -2,12 +2,11 @@
 #include <sstream>
 #include <string>
 #include "Commands.h"
-#include "Games.h"
 #include "Turns.h"
 
 using namespace std;
 
-int handleCommand(string command)
+int handleCommand(Game game, string command)
 {
   string filename;
   string other;
@@ -34,9 +33,9 @@ int handleCommand(string command)
       {
         return -1;
       }
-      return initializeFromFile(filename);
+      return game.initializeFromFile(filename);
     }
-    return initialize();
+    return game.initialize();
   }
 
   if (command == "save")
@@ -47,7 +46,7 @@ int handleCommand(string command)
       {
         return -1;
       }
-      return save(filename);
+      return game.save(filename);
     }
     else
     {
@@ -64,7 +63,7 @@ int handleCommand(string command)
       {
         return -1;
       }
-      return compressedSave(filename);
+      return game.compressedSave(filename);
     }
     else
     {
