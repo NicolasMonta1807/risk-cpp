@@ -18,14 +18,17 @@ public:
   int initializeFromFile(std::string filename);
   int save(std::string filename);
   int compressedSave(std::string filename);
+  int turn(int playerId);
+  std::vector<Player> getPlayers();
 
 private:
   void allocateSoldiers();
   void createTerritories();
   void printPlayerTerritories(Player player);
+  void placeArmies(int playerId);
   std::vector<Continent> continents;
   std::vector<Territory> territories;
-  std::list<Player> players;
+  std::vector<Player> players;
   std::queue<int> playerIds;
   bool initialized;
 };

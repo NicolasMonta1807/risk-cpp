@@ -4,6 +4,11 @@
 
 using namespace std;
 
+std::vector<Player> Game::getPlayers()
+{
+  return this->players;
+}
+
 void Game::createTerritories()
 {
 
@@ -57,12 +62,12 @@ void Game::createTerritories()
   std::vector<int> Africa = {33, 34, 35, 36, 37, 38};
   std::vector<int> Australia = {39, 40, 41, 42};
 
-  this->continents.push_back(Continent("AmericaDelNorte", NorthAmerica, 0));
-  this->continents.push_back(Continent("Europa", Europe, 0));
-  this->continents.push_back(Continent("Asia", Asia, 0));
-  this->continents.push_back(Continent("AmericaDelSur", SouthAmerica, 0));
-  this->continents.push_back(Continent("Africa", Africa, 0));
-  this->continents.push_back(Continent("Australia", Australia, 0));
+  this->continents.push_back(Continent("AmericaDelNorte", NorthAmerica, 0, 5));
+  this->continents.push_back(Continent("Europa", Europe, 0, 5));
+  this->continents.push_back(Continent("Asia", Asia, 0, 7));
+  this->continents.push_back(Continent("AmericaDelSur", SouthAmerica, 0, 2));
+  this->continents.push_back(Continent("Africa", Africa, 0, 3));
+  this->continents.push_back(Continent("Australia", Australia, 0, 2));
 }
 
 Game::Game()
@@ -108,16 +113,30 @@ std::vector<Territory> Game::getTerritories()
   return territories;
 }
 
+bool searchTerritory(Player player, int id)
+{
+  std::list<int>::iterator PlayerTerritoryIt;
+  list<int> playerTerritories = player.getTerritories();
+  for (PlayerTerritoryIt = playerTerritories.begin(); PlayerTerritoryIt != playerTerritories.end(); PlayerTerritoryIt++)
+  {
+    if (*PlayerTerritoryIt == id)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
 void Game::allocateSoldiers()
 {
   int territory = 0;
   int soldiersToFortify = 0;
   queue<Player> playersToFortify;
   vector<int> TerritoryAux;
-  std::list<Player>::iterator PlayerIt = players.begin();
+  std::vector<Player>::iterator PlayerIt = this->players.begin();
   std::vector<Territory>::iterator TerritoryIt;
   std::vector<int>::iterator TerritoryAuxIt;
-  for (int i = 0; i < 42; i++)
+  for (int i = 0; i < 3; i++)
   {
     std::cout << "Es el turno de: " << PlayerIt->getName() << endl;
 
@@ -153,7 +172,7 @@ void Game::allocateSoldiers()
     std::cout << "Ha escogido el territorio: " << TerritoryIt->getName() << endl;
     std::cout << "Con ID:                    " << TerritoryIt->getId() << endl;
 
-    std::advance(PlayerIt, 1);
+    PlayerIt++;
     if (PlayerIt == players.end())
     {
       PlayerIt = players.begin();
@@ -170,6 +189,7 @@ void Game::allocateSoldiers()
       PlayerIt = players.begin();
     }
   }
+
   while (playersToFortify.size() > 0)
   {
     printPlayerTerritories(*PlayerIt);
@@ -201,6 +221,11 @@ void Game::allocateSoldiers()
       playersToFortify.push(*PlayerIt);
     }
 
+    if (playersToFortify.size() == 0)
+    {
+      break;
+    }
+
     while (PlayerIt->getId() != playersToFortify.front().getId())
     {
       std::advance(PlayerIt, 1);
@@ -213,25 +238,15 @@ void Game::allocateSoldiers()
     territory = 0;
   }
 }
-bool searchTerritory(Player player, int id)
-{
-  std::list<int>::iterator PlayerTerritoryIt;
-  for (PlayerTerritoryIt = player.getTerritories().begin(); PlayerTerritoryIt != player.getTerritories().end(); PlayerTerritoryIt++)
-  {
-    if (*PlayerTerritoryIt == id)
-    {
-      return true;
-    }
-  }
-  return false;
-}
+
 void Game::printPlayerTerritories(Player player)
 {
   std::vector<Territory>::iterator TerritoryIt;
   std::list<int>::iterator PlayerTerritoryIt;
+  list<int> playerTerritories = player.getTerritories();
   std::cout << "Sus territorios son: " << endl;
   std::cout << "ID   Nombre" << endl;
-  for (PlayerTerritoryIt = player.getTerritories().begin(); PlayerTerritoryIt != player.getTerritories().end(); PlayerTerritoryIt++)
+  for (PlayerTerritoryIt = playerTerritories.begin(); PlayerTerritoryIt != playerTerritories.end(); PlayerTerritoryIt++)
   {
     for (TerritoryIt = this->territories.begin(); TerritoryIt != this->territories.end(); TerritoryIt++)
     {
@@ -242,6 +257,7 @@ void Game::printPlayerTerritories(Player player)
     }
   }
 }
+
 int Game::initialize()
 {
   int playerAmount = 0;
@@ -276,6 +292,7 @@ int Game::initialize()
       newPlayer.setSoldiersToAllocate(20);
       break;
     }
+
     players.push_back(newPlayer);
     playerIds.push(newPlayer.getId());
     std::cout << endl;
@@ -302,4 +319,77 @@ int Game::compressedSave(string filename)
 {
   std::cout << "Saving compressed to: " << filename << endl;
   return 0;
+}
+
+void Game::placeArmies(int playerId)
+{
+  std::vector<Player>::iterator PlayerIt = this->players.begin();
+  std::vector<Territory>::iterator TerritoryIt;
+  for (; PlayerIt != this->players.end(); PlayerIt++)
+  {
+    if (PlayerIt->getId() == playerId)
+      break;
+  }
+
+  int territory;
+  int soldiersToPlace;
+  while (PlayerIt->getSoldiersToAllocate() > 0)
+  {
+    printPlayerTerritories(*PlayerIt);
+    std::cout << "Usted tiene: " << PlayerIt->getSoldiersToAllocate() << " soldados para poner" << endl;
+    std::cout << "¿En cual territorio desea posicionar sus soldados?: ";
+    cin >> territory;
+    if (!searchTerritory(*PlayerIt, territory))
+    {
+      std::cout << "Este territorio no es suyo" << endl;
+      continue;
+    }
+    std::cout << "Cuantos soldados le va a meter?: ";
+    cin >> soldiersToPlace;
+    if (PlayerIt->getSoldiersToAllocate() >= soldiersToPlace && soldiersToPlace > 0)
+    {
+      TerritoryIt = this->territories.begin();
+      std::advance(TerritoryIt, territory - 1);
+      TerritoryIt->addSoldiers(soldiersToPlace);
+      PlayerIt->removeSoldiers(soldiersToPlace);
+    }
+    else
+    {
+      std::cout << "No tiene los suficientes soldados para hacer eso" << endl;
+      continue;
+    }
+  }
+}
+
+int Game::turn(int playerId)
+{
+  std::queue<int> queueIds = this->playerIds;
+  if (queueIds.front() != playerId)
+  {
+    cout << "No es su turno" << endl;
+    return 0;
+  }
+
+  std::vector<Player>::iterator PlayerIt = this->players.begin();
+  for (; PlayerIt != this->players.end(); PlayerIt++)
+  {
+    if (playerId == PlayerIt->getId())
+      break;
+  }
+
+  int newSoldiers = PlayerIt->getTerritories().size() / 3;
+
+  std::vector<Continent>::iterator ContinentIt = this->continents.begin();
+  for (; ContinentIt != this->continents.end(); ContinentIt++)
+  {
+    if (ContinentIt->getOwner() == playerId)
+    {
+      newSoldiers += ContinentIt->getValue();
+    }
+  }
+
+  PlayerIt->setSoldiersToAllocate(newSoldiers);
+  placeArmies(playerId);
+
+  return 1;
 }

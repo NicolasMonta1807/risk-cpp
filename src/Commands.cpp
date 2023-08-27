@@ -35,7 +35,9 @@ int handleCommand(Game game, string command)
       }
       return game.initializeFromFile(filename);
     }
-    return game.initialize();
+    game.initialize();
+    cout << game.getPlayers().begin()->getName() << " is playing." << endl;
+    return 0;
   }
 
   if (command == "save")
@@ -80,7 +82,8 @@ int handleCommand(Game game, string command)
       {
         return -1;
       }
-      return initializeTurn(id);
+      cout << game.getPlayers().begin()->getName() << " is playing." << endl;
+      return game.turn(id);
     }
     else
     {

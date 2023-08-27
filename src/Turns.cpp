@@ -5,46 +5,6 @@ using namespace std;
 
 int initializeTurn(int playerID)
 {
-    int option = 0;
-    string territory;
-    int cost;
-
-    cout << "It should be this player's turn: " << playerID << " Who gets a number of soldiers this turn" << endl;
-    cout << "That then has to allocate those soldiers" << endl;
-
-    while (option != 4)
-    {
-        turnsMenu();
-        cout << "Type the number of the option you choose: ";
-        cin >> option;
-        cin.ignore();
-
-        cout << endl;
-
-        switch (option)
-        {
-        case 1:
-            cout << "It will ask for a territory to attack with all the details" << endl;
-            break;
-        case 2:
-            cout << "Enter the name of the territory: ";
-            cin >> territory;
-            cout << endl;
-            cost = conquestCost(territory);
-            cout << cost << endl;
-            break;
-        case 3:
-            cost = cheapestConquest();
-            cout << cost << endl;
-            break;
-        case 4:
-            cout << "The turn has ended" << endl;
-            break;
-        default:
-            cout << "Not an option" << endl;
-        }
-    }
-    return 0;
 }
 
 int conquestCost(string territory)
