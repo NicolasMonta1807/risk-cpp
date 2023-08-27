@@ -15,16 +15,15 @@ public:
   void setSoldiersToAllocate(int soldiersToAllocate);
   void removeSoldiers(int soldiers);
   int getSoldiersToAllocate();
-  std::list<int> getTerritories();
+  std::vector<int> getTerritories();
   void assignTerritory(int territoryId);
   void removeTerritory(int territoryId);
-  // int countSoldiers();
 
 private:
   int id;
   int soldiersToAllocate;
   std::string name;
-  std::list<int> territories;
+  std::vector<int> territories;
 };
 
 #endif

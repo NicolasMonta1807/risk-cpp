@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-  Game game = Game();
+  Game *game = new Game();
   string userInput;
 
   while (true)
@@ -18,7 +18,6 @@ int main()
       cout << "Invalid command: " << userInput << endl;
       cout << "Type 'help' for a list of commands." << endl;
     }
-    cout << game.getPlayers().begin()->getName() << " is playing." << endl;
     continue;
   }
 }

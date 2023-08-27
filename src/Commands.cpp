@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int handleCommand(Game game, string command)
+int handleCommand(Game *game, string command)
 {
   string filename;
   string other;
@@ -33,10 +33,9 @@ int handleCommand(Game game, string command)
       {
         return -1;
       }
-      return game.initializeFromFile(filename);
+      return game->initializeFromFile(filename);
     }
-    game.initialize();
-    cout << game.getPlayers().begin()->getName() << " is playing." << endl;
+    game->initialize();
     return 0;
   }
 
@@ -48,7 +47,7 @@ int handleCommand(Game game, string command)
       {
         return -1;
       }
-      return game.save(filename);
+      return game->save(filename);
     }
     else
     {
@@ -65,7 +64,7 @@ int handleCommand(Game game, string command)
       {
         return -1;
       }
-      return game.compressedSave(filename);
+      return game->compressedSave(filename);
     }
     else
     {
@@ -82,8 +81,7 @@ int handleCommand(Game game, string command)
       {
         return -1;
       }
-      cout << game.getPlayers().begin()->getName() << " is playing." << endl;
-      return game.turn(id);
+      return game->turn(id);
     }
     else
     {

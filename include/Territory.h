@@ -2,14 +2,14 @@
 #define _TERRITORY_H_
 
 #include <string>
-#include <list>
+#include <vector>
 
 class Territory
 {
 public:
   Territory();
-  Territory(int id, std::string name, std::list<int> neighbors);
-  std::list<int> getNeighbors();
+  Territory(int id, std::string name, std::vector<int> neighbors);
+  std::vector<int> getNeighbors();
   std::string getName();
   int getId();
   int getSoldiers();
@@ -20,7 +20,7 @@ private:
   int id;
   int soldiers;
   std::string name;
-  std::list<int> neighbors;
+  std::vector<int> neighbors;
 };
 
 #endif

@@ -26,6 +26,12 @@ private:
   void createTerritories();
   void printPlayerTerritories(Player player);
   void placeArmies(int playerId);
+  void Attack(int playerId);
+  void printAdjacentTerritories(int territory, int playerId, bool adjacentOwned);
+  bool isNeighbor(int territory1, int territory2);
+  bool isValidToAttack(int playerId, int territory);
+  void changeOwner(int playerId, int territoryId, int newSoldiers);
+  void Fortify(int playerId);
   std::vector<Continent> continents;
   std::vector<Territory> territories;
   std::vector<Player> players;

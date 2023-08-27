@@ -1,6 +1,7 @@
-#include "Game.h"
 #include <iostream>
 #include <iomanip>
+#include <random>
+#include "Game.h"
 
 using namespace std;
 
@@ -73,6 +74,7 @@ void Game::createTerritories()
 Game::Game()
 {
   createTerritories();
+  this->players = vector<Player>();
 }
 
 void printMap()
@@ -115,8 +117,8 @@ std::vector<Territory> Game::getTerritories()
 
 bool searchTerritory(Player player, int id)
 {
-  std::list<int>::iterator PlayerTerritoryIt;
-  list<int> playerTerritories = player.getTerritories();
+  std::vector<int>::iterator PlayerTerritoryIt;
+  vector<int> playerTerritories = player.getTerritories();
   for (PlayerTerritoryIt = playerTerritories.begin(); PlayerTerritoryIt != playerTerritories.end(); PlayerTerritoryIt++)
   {
     if (*PlayerTerritoryIt == id)
@@ -136,7 +138,7 @@ void Game::allocateSoldiers()
   std::vector<Player>::iterator PlayerIt = this->players.begin();
   std::vector<Territory>::iterator TerritoryIt;
   std::vector<int>::iterator TerritoryAuxIt;
-  for (int i = 0; i < 3; i++)
+  for (int i = 0; i < 12; i++)
   {
     std::cout << "Es el turno de: " << PlayerIt->getName() << endl;
 
@@ -242,8 +244,8 @@ void Game::allocateSoldiers()
 void Game::printPlayerTerritories(Player player)
 {
   std::vector<Territory>::iterator TerritoryIt;
-  std::list<int>::iterator PlayerTerritoryIt;
-  list<int> playerTerritories = player.getTerritories();
+  std::vector<int>::iterator PlayerTerritoryIt;
+  vector<int> playerTerritories = player.getTerritories();
   std::cout << "Sus territorios son: " << endl;
   std::cout << "ID   Nombre" << endl;
   for (PlayerTerritoryIt = playerTerritories.begin(); PlayerTerritoryIt != playerTerritories.end(); PlayerTerritoryIt++)
@@ -252,7 +254,7 @@ void Game::printPlayerTerritories(Player player)
     {
       if (TerritoryIt->getId() == *PlayerTerritoryIt)
       {
-        std::cout << TerritoryIt->getId() << "  " << TerritoryIt->getName() << endl;
+        std::cout << TerritoryIt->getId() << "  " << TerritoryIt->getName() << " - Soldados " << TerritoryIt->getSoldiers() << endl;
       }
     }
   }
@@ -293,12 +295,13 @@ int Game::initialize()
       break;
     }
 
-    players.push_back(newPlayer);
-    playerIds.push(newPlayer.getId());
-    std::cout << endl;
+    this->players.push_back(newPlayer);
+    this->playerIds.push(newPlayer.getId());
   }
 
   allocateSoldiers();
+
+  cin.ignore();
 
   return 0;
 }
@@ -319,6 +322,225 @@ int Game::compressedSave(string filename)
 {
   std::cout << "Saving compressed to: " << filename << endl;
   return 0;
+}
+
+void Game::printAdjacentTerritories(int territory, int playerId, bool adjacentOwned)
+{
+  vector<int> neighbors = this->territories[territory - 1].getNeighbors();
+  vector<int> playerTerritories = this->players[playerId - 1].getTerritories();
+
+  if (adjacentOwned)
+  {
+    for (int i = 0; i < neighbors.size(); i++)
+    {
+      for (int j = 0; j < playerTerritories.size(); j++)
+      {
+        if (neighbors[i] == playerTerritories[j])
+        {
+          Territory territory = territories[neighbors[i] - 1];
+          cout << territory.getId() << " " << territory.getName() << " - Soldados: " << territory.getSoldiers() << endl;
+        }
+      }
+    }
+  }
+  else
+  {
+    for (int i = 0; i < neighbors.size(); i++)
+    {
+      bool found = false;
+      for (int j = 0; j < playerTerritories.size(); j++)
+      {
+        if (neighbors[i] == playerTerritories[j])
+        {
+          found = true;
+          break;
+        }
+      }
+      if (!found)
+      {
+        Territory territory = territories[neighbors[i] - 1];
+        cout << territory.getId() << " " << territory.getName() << " - Soldados: " << territory.getSoldiers() << endl;
+      }
+    }
+  }
+}
+
+bool Game::isNeighbor(int territoryFrom, int territoryTo)
+{
+  Territory territory = this->territories[territoryFrom - 1];
+  vector<int> neighbors = territory.getNeighbors();
+  for (int i = 0; i < neighbors.size(); i++)
+  {
+    if (neighbors[i] == territoryTo)
+      return true;
+  }
+  return false;
+}
+
+bool Game::isValidToAttack(int playerId, int territory)
+{
+  Player player = this->players[playerId - 1];
+  bool isFromPlayer = false;
+  int soldiers = 0;
+
+  vector<int> territories = player.getTerritories();
+  for (int i = 0; i < territories.size(); i++)
+  {
+    if (territories[i] == territory)
+    {
+      isFromPlayer = true;
+    }
+  }
+
+  for (int i = 0; i < this->territories.size(); i++)
+  {
+    if (this->territories[i].getId() == territory)
+    {
+      soldiers = this->territories[i].getSoldiers();
+    }
+  }
+
+  return (isFromPlayer && soldiers > 2);
+}
+
+vector<int> rollDice(int tries)
+{
+  vector<int> result;
+
+  std::random_device rd;
+  std::mt19937 gen(rd());
+
+  std::uniform_int_distribution<int> dist(1, 6);
+  for (int i = 0; i < tries; i++)
+  {
+    result.push_back(dist(gen));
+  }
+
+  for (int i = 0; i < result.size(); i++)
+  {
+    for (int j = i; j < result.size(); j++)
+    {
+      if (result[j] > result[i])
+      {
+        int temp = result[i];
+        result[i] = result[j];
+        result[j] = temp;
+      }
+    }
+  }
+
+  return result;
+}
+
+void Game::changeOwner(int playerId, int territoryId, int newSoldiers)
+{
+  for (int i = 0; i < players.size(); i++)
+  {
+    for (int j = 0; j < players[i].getTerritories().size(); j++)
+    {
+      if (players[i].getTerritories()[j] == territoryId)
+      {
+        players[i].removeTerritory(territoryId);
+        players[playerId - 1].assignTerritory(territoryId);
+      }
+    }
+  }
+  territories[territoryId - 1].addSoldiers(newSoldiers);
+}
+
+void Game::Attack(int playerId)
+{
+  char option;
+  while (option != 'n')
+  {
+    cout << "¿Desea atacar a un territorio?: (S/N)";
+    cin >> option;
+    option = tolower(option);
+
+    switch (option)
+    {
+    case 's':
+      int attackFrom;
+      int attackTo;
+      printPlayerTerritories(this->players[playerId - 1]);
+      cout << "Elija el numero del territorio desde donde atacar: ";
+      cin >> attackFrom;
+      if (!isValidToAttack(playerId, attackFrom))
+      {
+        cout << "No puede atacar desde este territorio" << endl;
+        break;
+      }
+      cout << "-----------------------------------" << endl;
+      cout << "Territorios disponibles para atacar" << endl;
+      cout << "-----------------------------------" << endl;
+      printAdjacentTerritories(attackFrom, playerId, false);
+      cout << "Elija el numero del territorio a atacar: ";
+      cin >> attackTo;
+      if (isNeighbor(attackFrom, attackTo))
+      {
+        Territory attacking = this->territories[attackFrom - 1];
+
+        int diceAttacking = attacking.getSoldiers() - 1;
+        if (diceAttacking > 3)
+          diceAttacking = 3;
+        Territory defending = this->territories[attackTo - 1];
+        int diceDefending = defending.getSoldiers();
+        if (diceDefending > 2)
+          diceDefending = 2;
+
+        vector<int> resultAttacking = rollDice(diceAttacking);
+        vector<int> resultDefending = rollDice(diceDefending);
+
+        int size;
+        if (resultAttacking.size() > resultDefending.size())
+          size = resultDefending.size();
+        else
+          size = resultAttacking.size();
+
+        for (int i = 0; i < size; i++)
+        {
+          if (resultAttacking[i] > resultDefending[i])
+          {
+            cout << "El jugador " << playerId << " ha ganado el ataque" << endl;
+            this->territories[attackTo - 1].removeSoldiers(1);
+            if (this->territories[attackTo - 1].getSoldiers() == 0)
+            {
+              cout << "El jugador " << playerId << " ha ganado el territorio" << endl;
+              int soldiersToDeplace;
+              cout << "Cuantos soldados desea deplazar?: ";
+              cin >> soldiersToDeplace;
+              this->territories[attackFrom - 1].removeSoldiers(soldiersToDeplace);
+              changeOwner(playerId, attackTo, soldiersToDeplace);
+              break;
+            }
+          }
+          else
+          {
+            cout << "El jugador " << playerId << " ha perdido el ataque" << endl;
+            cout << "Ha perdido un soldado en " << this->territories[attackFrom - 1].getName() << endl;
+            this->territories[attackFrom - 1].removeSoldiers(1);
+          }
+        }
+      }
+      else
+      {
+        cout << "Este territorio no está disponible para atacar" << endl;
+      }
+
+      break;
+    case 'n':
+      cout << "-----------------------" << endl;
+      cout << " Ha escogido no atacar " << endl;
+      cout << "-----------------------" << endl;
+      return;
+      break;
+    default:
+      cout << "Por favor ingrese una opcion valida" << endl;
+      cout << "¿Desea atacar a otro jugador?: (S/N)";
+      cin >> option;
+      break;
+    }
+  }
 }
 
 void Game::placeArmies(int playerId)
@@ -361,6 +583,58 @@ void Game::placeArmies(int playerId)
   }
 }
 
+void Game::Fortify(int playerId)
+{
+  printPlayerTerritories(this->players[playerId - 1]);
+
+  char option;
+  cout << "¿Desea fortificar alguno de sus territorios?: (S/N)";
+  cin >> option;
+
+  switch (tolower(option))
+  {
+  case 's':
+    int territoryFrom;
+    int territoryTo;
+    printPlayerTerritories(this->players[playerId - 1]);
+    cout << "Elija el numero del territorio a fortificar: ";
+    cin >> territoryTo;
+
+    printAdjacentTerritories(territoryTo, playerId, true);
+    cout << "Elija el numero del territorio del que parten los soldados: ";
+    cin >> territoryFrom;
+
+    if (isNeighbor(territoryTo, territoryFrom))
+    {
+      int soldiersToMove = 0;
+      while (true)
+      {
+        cout << "¿Cuantos soldados desea mover?: ";
+        cin >> soldiersToMove;
+
+        if (territories[territoryFrom - 1].getSoldiers() <= soldiersToMove)
+        {
+          cout << "No tiene los soldados suficientes" << endl;
+          cout << "No puede el territorio vacios" << endl;
+          continue;
+        }
+        break;
+      }
+      territories[territoryFrom - 1].removeSoldiers(soldiersToMove);
+      territories[territoryTo - 1].addSoldiers(soldiersToMove);
+
+      printPlayerTerritories(this->players[playerId - 1]);
+    }
+
+    break;
+  case 'n':
+    cout << "Ha decidido no fortificar" << endl;
+    return;
+  default:
+    break;
+  }
+}
+
 int Game::turn(int playerId)
 {
   std::queue<int> queueIds = this->playerIds;
@@ -378,6 +652,8 @@ int Game::turn(int playerId)
   }
 
   int newSoldiers = PlayerIt->getTerritories().size() / 3;
+  if (newSoldiers < 3)
+    newSoldiers = 3;
 
   std::vector<Continent>::iterator ContinentIt = this->continents.begin();
   for (; ContinentIt != this->continents.end(); ContinentIt++)
@@ -390,6 +666,13 @@ int Game::turn(int playerId)
 
   PlayerIt->setSoldiersToAllocate(newSoldiers);
   placeArmies(playerId);
+  Attack(playerId);
+  Fortify(playerId);
+
+  this->playerIds.push(this->playerIds.front());
+  playerIds.pop();
+
+  cin.ignore();
 
   return 1;
 }

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Territory.h"
 
-Territory::Territory(int id, std::string name, std::list<int> neighbors)
+Territory::Territory(int id, std::string name, std::vector<int> neighbors)
 {
   this->id = id;
   this->name = name;
@@ -9,7 +9,7 @@ Territory::Territory(int id, std::string name, std::list<int> neighbors)
   this->soldiers = 0;
 }
 
-std::list<int> Territory::getNeighbors()
+std::vector<int> Territory::getNeighbors()
 {
   return this->neighbors;
 }

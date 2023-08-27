@@ -38,7 +38,7 @@ void Player::assignTerritory(int territoryId)
 
 void Player::removeTerritory(int territoryId)
 {
-  std::list<int>::iterator it = this->territories.begin();
+  std::vector<int>::iterator it = this->territories.begin();
 
   for (; it != this->territories.end(); it++)
   {
@@ -48,19 +48,7 @@ void Player::removeTerritory(int territoryId)
   this->territories.erase(it);
 }
 
-std::list<int> Player::getTerritories()
+std::vector<int> Player::getTerritories()
 {
   return this->territories;
 }
-// int Player::countSoldiers()
-// {
-//   int soldiers = 0;
-//   std::list<int>::iterator it = this->territories.begin();
-
-//   for (; it != this->territories.end(); it++)
-//   {
-//     soldiers += it->getSoldiers();
-//   }
-
-//   return soldiers;
-// }
