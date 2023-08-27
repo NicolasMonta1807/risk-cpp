@@ -48,6 +48,10 @@ void Player::removeTerritory(int territoryId)
   this->territories.erase(it);
 }
 
+std::list<int> Player::getTerritories()
+{
+  return this->territories;
+}
 // int Player::countSoldiers()
 // {
 //   int soldiers = 0;

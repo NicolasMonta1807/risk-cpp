@@ -12,7 +12,8 @@ class Game
 {
 public:
   Game();
-  std::list<Continent> getContinents();
+  std::vector<Continent> getContinents();
+  std::vector<Territory> getTerritories();
   int initialize();
   int initializeFromFile(std::string filename);
   int save(std::string filename);
@@ -21,7 +22,8 @@ public:
 private:
   void allocateSoldiers();
   void createTerritories();
-  std::list<Continent> continents;
+  std::vector<Continent> continents;
+  std::vector<Territory> territories;
   std::list<Player> players;
   std::queue<int> playerIds;
   bool initialized;

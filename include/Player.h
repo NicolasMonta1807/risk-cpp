@@ -15,7 +15,7 @@ public:
   void setSoldiersToAllocate(int soldiersToAllocate);
   void removeSoldiers(int soldiers);
   int getSoldiersToAllocate();
-  std::list<Territory> getTerritories();
+  std::list<int> getTerritories();
   void assignTerritory(int territoryId);
   void removeTerritory(int territoryId);
   // int countSoldiers();

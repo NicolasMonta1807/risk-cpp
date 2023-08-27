@@ -6,68 +6,63 @@ using namespace std;
 
 void Game::createTerritories()
 {
-  std::vector<Territory> NorthAmerica = {
-      Territory(1, "Alaska", {2, 6}, false),
-      Territory(2, "Alberta", {6, 7, 9, 4}, false),
-      Territory(3, "América Central", {4, 9, 32}, false),
-      Territory(4, "Estados Unidos Orientales", {8, 7, 9, 3}, false),
-      Territory(5, "Groenlandia", {6, 7, 8, 11}, false),
-      Territory(6, "Territorio Noroccidental", {1, 2, 7, 5}, false),
-      Territory(7, "Ontario", {6, 2, 9, 4, 8}, false),
-      Territory(8, "Quebec", {5, 7, 4}, false),
-      Territory(9, "Estados Unidos Occidentales", {2, 7, 4, 3}, false),
-  };
 
-  std::vector<Territory> Europe = {
-      Territory(10, "Gran Bretaña", {16, 11, 13, 12}, false),
-      Territory(11, "Islandia", {5, 10, 12}, false),
-      Territory(12, "Europa del Norte", {10, 16, 14, 15, 13}, false),
-      Territory(13, "Escandinavia", {15, 12, 11, 10}, false),
-      Territory(14, "Europa del Sur", {16, 12, 15, 37, 35, 23}, false),
-      Territory(15, "Ucrania", {4, 3, 5, 17, 26, 23}, false),
-      Territory(16, "Europa Occidental", {10, 12, 14, 37}, false),
-  };
+  this->territories.push_back(Territory(1, "Alaska", {2, 6}));
+  this->territories.push_back(Territory(2, "Alberta", {6, 7, 9, 4}));
+  this->territories.push_back(Territory(3, "America Central", {4, 9, 32}));
+  this->territories.push_back(Territory(4, "Estados Unidos Orientales", {8, 7, 9, 3}));
+  this->territories.push_back(Territory(5, "Groenlandia", {6, 7, 8, 11}));
+  this->territories.push_back(Territory(6, "Territorio Noroccidental", {1, 2, 7, 5}));
+  this->territories.push_back(Territory(7, "Ontario", {6, 2, 9, 4, 8}));
+  this->territories.push_back(Territory(8, "Quebec", {5, 7, 4}));
+  this->territories.push_back(Territory(9, "Estados Unidos Occidentales", {2, 7, 4, 3}));
+  this->territories.push_back(Territory(10, "Gran Bretania", {16, 11, 13, 12}));
+  this->territories.push_back(Territory(11, "Islandia", {5, 10, 12}));
+  this->territories.push_back(Territory(12, "Europa del Norte", {10, 16, 14, 15, 13}));
+  this->territories.push_back(Territory(13, "Escandinavia", {15, 12, 11, 10}));
+  this->territories.push_back(Territory(14, "Europa del Sur", {16, 12, 15, 37, 35, 23}));
+  this->territories.push_back(Territory(15, "Ucrania", {4, 3, 5, 17, 26, 23}));
+  this->territories.push_back(Territory(16, "Europa Occidental", {10, 12, 14, 37}));
+  this->territories.push_back(Territory(17, "Afghanistan", {15, 26, 23}));
+  this->territories.push_back(Territory(18, "China", {17, 19, 25, 24, 27, 26}));
+  this->territories.push_back(Territory(19, "India", {23, 17, 18, 25}));
+  this->territories.push_back(Territory(20, "Irkutsk", {24, 26, 28, 22}));
+  this->territories.push_back(Territory(21, "Japon", {22, 24}));
+  this->territories.push_back(Territory(22, "Kamchatka", {28, 20, 24, 1}));
+  this->territories.push_back(Territory(23, "Medio Oriente", {17, 35, 15, 14, 19}));
+  this->territories.push_back(Territory(24, "Mongolia", {20, 18, 26, 22, 21}));
+  this->territories.push_back(Territory(25, "Siam", {18, 19, 40}));
+  this->territories.push_back(Territory(26, "Siberia", {28, 20, 24, 18, 27}));
+  this->territories.push_back(Territory(27, "Ural", {15, 17, 26, 18, 24}));
+  this->territories.push_back(Territory(28, "Yakutsk", {26, 20, 22}));
+  this->territories.push_back(Territory(29, "Argentina", {30, 31}));
+  this->territories.push_back(Territory(30, "Brasil", {29, 31, 32, 37}));
+  this->territories.push_back(Territory(31, "Peru", {29, 30, 32}));
+  this->territories.push_back(Territory(32, "Colombia", {30, 31, 3}));
+  this->territories.push_back(Territory(33, "Congo", {34, 37, 38}));
+  this->territories.push_back(Territory(34, "Africa Oriental", {33, 35, 36, 37, 38}));
+  this->territories.push_back(Territory(35, "Egipto", {34, 37, 23, 14}));
+  this->territories.push_back(Territory(36, "Madagascar", {34, 38}));
+  this->territories.push_back(Territory(37, "Africa del Norte", {30, 16, 14, 33, 34, 35}));
+  this->territories.push_back(Territory(38, "Africa del Sur", {33, 34, 36}));
+  this->territories.push_back(Territory(39, "Australia Oriental", {42, 41}));
+  this->territories.push_back(Territory(40, "Indonesia", {42, 41, 25}));
+  this->territories.push_back(Territory(41, "Nueva Guinea", {39, 40, 42}));
+  this->territories.push_back(Territory(42, "Australia Occidental", {39, 40, 41}));
 
-  std::vector<Territory> Asia = {
-      Territory(17, "Afghanistan", {15, 26, 23}, false),
-      Territory(18, "China", {17, 19, 25, 24, 27, 26}, false),
-      Territory(19, "India", {23, 17, 18, 25}, false),
-      Territory(20, "Irkutsk", {24, 26, 28, 22}, false),
-      Territory(21, "Japón", {22, 24}, false),
-      Territory(22, "Kamchatka", {28, 20, 24, 1}, false),
-      Territory(23, "Medio Oriente", {17, 35, 15, 14, 19}, false),
-      Territory(24, "Mongolia", {20, 18, 26, 22, 21}, false),
-      Territory(25, "Siam", {18, 19, 40}, false),
-      Territory(26, "Siberia", {28, 20, 24, 18, 27}, false),
-      Territory(27, "Ural", {15, 17, 26, 18, 24}, false),
-      Territory(28, "Yakutsk", {26, 20, 22}, false),
-  };
+  std::vector<int> NorthAmerica = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  std::vector<int> Europe = {10, 11, 12, 13, 14, 15, 16};
+  std::vector<int> Asia = {17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28};
+  std::vector<int> SouthAmerica = {29, 30, 31, 32};
+  std::vector<int> Africa = {33, 34, 35, 36, 37, 38};
+  std::vector<int> Australia = {39, 40, 41, 42};
 
-  std::vector<Territory> SouthAmerica = {
-      Territory(29, "Argentina", {30, 31}, false),
-      Territory(30, "Brasil", {29, 31, 32, 37}, false),
-      Territory(31, "Perú", {29, 30, 32}, false),
-      Territory(32, "Colombia", {30, 31, 3}, false),
-  };
-
-  std::vector<Territory> Africa = {
-      Territory(33, "Congo", {34, 37, 38}, false),
-      Territory(34, "África Oriental", {33, 35, 36, 37, 38}, false),
-      Territory(35, "Egipto", {34, 37, 23, 14}, false),
-      Territory(36, "Madagascar", {34, 38}, false),
-      Territory(37, "África del Norte", {30, 16, 14, 33, 34, 35}, false),
-      Territory(38, "África del Sur", {33, 34, 36}, false),
-      Territory(39, "Australia Oriental", {42, 41}, false),
-      Territory(40, "Indonesia", {42, 41, 25}, false),
-      Territory(41, "Nueva Guinea", {39, 40, 42}, false),
-      Territory(42, "Australia Occidental", {39, 40, 41}, false),
-  };
-
-  this->continents.push_back(Continent("América del Norte", NorthAmerica));
-  this->continents.push_back(Continent("Europa", Europe));
-  this->continents.push_back(Continent("Asia", Asia));
-  this->continents.push_back(Continent("América del Sur", SouthAmerica));
-  this->continents.push_back(Continent("África", Africa));
+  this->continents.push_back(Continent("AmericaDelNorte", NorthAmerica, 0));
+  this->continents.push_back(Continent("Europa", Europe, 0));
+  this->continents.push_back(Continent("Asia", Asia, 0));
+  this->continents.push_back(Continent("AmericaDelSur", SouthAmerica, 0));
+  this->continents.push_back(Continent("Africa", Africa, 0));
+  this->continents.push_back(Continent("Australia", Australia, 0));
 }
 
 Game::Game()
@@ -103,111 +98,65 @@ void printMap()
   return;
 }
 
-std::list<Continent> Game::getContinents()
+std::vector<Continent> Game::getContinents()
 {
   return continents;
 }
 
+std::vector<Territory> Game::getTerritories()
+{
+  return territories;
+}
+
 void Game::allocateSoldiers()
 {
-  list<Player>::iterator currentPlayer = this->players.begin();
-  for (int i = 1; i <= 42; i++)
+  int territory = 0;
+  vector<int> TerritoryAux;
+  std::list<Player>::iterator PlayerIt = players.begin();
+  std::vector<Territory>::iterator TerritoryIt;
+  std::vector<int>::iterator TerritoryAuxIt;
+  for (int i = 0; i < 42; i++)
   {
-    int territory = 0;
-    std::cout << "------------------" << endl;
-    std::cout << "Jugador " << currentPlayer->getName() << endl;
-    std::cout << "------------------" << endl;
-    printMap();
+    std::cout << "Es el turno de: " << PlayerIt->getName() << endl;
 
-    int conqueror;
-    vector<Territory>::iterator territoryToAllocate;
     while (territory < 1 || territory > 42)
     {
-      std::cout << "Escoja un territorio para asignar soldados: ";
+      printMap();
+      std::cout << "¿Cuál territorio desea conquistar?:";
       cin >> territory;
-      if (territory >= 1 && territory <= 9)
+      if (i != 0)
       {
-        list<Continent> continents = this->continents;
-        std::list<Continent>::iterator it = continents.begin();
-        territoryToAllocate = it->getTerritories().begin();
-        std::advance(territoryToAllocate, territory - 1);
-      }
-
-      if (territory >= 10 && territory <= 16)
-      {
-        list<Continent> continents = Game::getContinents();
-        std::list<Continent>::iterator it = continents.begin();
-        it++;
-        vector<Territory> territories = it->getTerritories();
-        territoryToAllocate = territories.begin();
-        std::advance(territoryToAllocate, territory - 10 - 1);
-      }
-
-      if (territory >= 17 && territory <= 28)
-      {
-        list<Continent> continents = Game::getContinents();
-        std::list<Continent>::iterator it = continents.begin();
-        it++;
-        it++;
-        vector<Territory> territories = it->getTerritories();
-        territoryToAllocate = territories.begin();
-        std::advance(territoryToAllocate, territory - 28 - 1);
-      }
-
-      if (territory >= 29 && territory <= 32)
-      {
-        list<Continent> continents = Game::getContinents();
-        std::list<Continent>::iterator it = continents.begin();
-        it++;
-        it++;
-        it++;
-        vector<Territory> territories = it->getTerritories();
-        territoryToAllocate = territories.begin();
-        std::advance(territoryToAllocate, territory - 32 - 1);
-      }
-
-      if (territory >= 33 && territory <= 38)
-      {
-        list<Continent> continents = Game::getContinents();
-        std::list<Continent>::iterator it = continents.begin();
-        it++;
-        it++;
-        it++;
-        it++;
-        vector<Territory> territories = it->getTerritories();
-        territoryToAllocate = territories.begin();
-        std::advance(territoryToAllocate, territory - 38 - 1);
-      }
-
-      if (territory >= 38 && territory <= 42)
-      {
-        list<Continent> continents = Game::getContinents();
-        std::list<Continent>::iterator it = continents.begin();
-        it++;
-        it++;
-        it++;
-        it++;
-        it++;
-        vector<Territory> territories = it->getTerritories();
-        territoryToAllocate = territories.begin();
-        std::advance(territoryToAllocate, territory - 42 - 1);
-      }
-
-      if (territoryToAllocate->getConqueror())
-      {
-        std::cout << "Este territorio ya tiene dueño" << endl;
-        territory = 0;
+        TerritoryAuxIt = TerritoryAux.begin();
+        for (; TerritoryAuxIt != TerritoryAux.end(); TerritoryAuxIt++)
+        {
+          if (territory == *TerritoryAuxIt)
+          {
+            cout << "¡El territorio ya tiene dueño!" << endl;
+            territory = 0;
+            break;
+          }
+        }
       }
     }
+    TerritoryAux.push_back(territory);
 
-    territoryToAllocate->conquerTerritory();
-    std::cout << "AHORAAAA EL DUEÑO DE ESTO ES " << territoryToAllocate->getConqueror() << endl;
-    currentPlayer->assignTerritory(territoryToAllocate->getId());
-    currentPlayer->removeSoldiers(1);
+    PlayerIt->assignTerritory(territory);
 
-    std::cout << "Ha escogido el territorio " << territoryToAllocate->getName() << endl;
-    std::cout << "Un soldado será asignado a este territorio" << endl;
-    std::cout << "Le quedan " << currentPlayer->getSoldiersToAllocate() << " soldados" << endl;
+    PlayerIt->removeSoldiers(1);
+
+    TerritoryIt = this->territories.begin();
+    std::advance(TerritoryIt, territory - 1);
+    TerritoryIt->addSoldiers(1);
+
+    std::cout << "Ha escogido el territorio: " << TerritoryIt->getName() << endl;
+    std::cout << "Con ID:                    " << TerritoryIt->getId() << endl;
+
+    std::advance(PlayerIt, 1);
+    if (PlayerIt == players.end())
+    {
+      PlayerIt = players.begin();
+    }
+    territory = 0;
   }
 }
 

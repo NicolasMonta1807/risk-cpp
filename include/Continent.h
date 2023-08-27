@@ -10,14 +10,15 @@ class Continent
 {
 public:
   Continent();
-  Continent(std::string name, std::vector<Territory> territories);
-  std::vector<Territory> getTerritories();
+  Continent(std::string name, std::vector<int> territories, int owner);
+  std::vector<int> getTerritories();
   void setOwner(int playerId);
+  int getOwner();
 
 private:
   int owner;
   std::string name;
-  std::vector<Territory> territories;
+  std::vector<int> territories;
 };
 
 #endif

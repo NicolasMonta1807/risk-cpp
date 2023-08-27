@@ -1,13 +1,12 @@
 #include <iostream>
 #include "Territory.h"
 
-Territory::Territory(int id, std::string name, std::list<int> neighbors, bool conquered)
+Territory::Territory(int id, std::string name, std::list<int> neighbors)
 {
   this->id = id;
   this->name = name;
   this->neighbors = neighbors;
   this->soldiers = 0;
-  this->conquered = conquered;
 }
 
 std::list<int> Territory::getNeighbors()
@@ -18,16 +17,6 @@ std::list<int> Territory::getNeighbors()
 int Territory::getId()
 {
   return this->id;
-}
-
-void Territory::conquerTerritory()
-{
-  this->conquered = true;
-}
-
-bool Territory::getConqueror()
-{
-  return this->conquered;
 }
 
 std::string Territory::getName()

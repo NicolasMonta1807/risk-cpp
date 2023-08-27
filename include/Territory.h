@@ -8,18 +8,15 @@ class Territory
 {
 public:
   Territory();
-  Territory(int id, std::string name, std::list<int> neighbors, bool conquered);
+  Territory(int id, std::string name, std::list<int> neighbors);
   std::list<int> getNeighbors();
   std::string getName();
   int getId();
   int getSoldiers();
   void addSoldiers(int amount);
   void removeSoldiers(int amount);
-  void conquerTerritory();
-  bool getConqueror();
 
 private:
-  bool conquered;
   int id;
   int soldiers;
   std::string name;
