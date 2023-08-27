@@ -22,6 +22,7 @@ public:
 private:
   void allocateSoldiers();
   void createTerritories();
+  void printPlayerTerritories(Player player);
   std::vector<Continent> continents;
   std::vector<Territory> territories;
   std::list<Player> players;
