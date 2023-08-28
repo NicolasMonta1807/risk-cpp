@@ -31,6 +31,7 @@ private:
   bool isNeighbor(int territory1, int territory2);
   bool isValidToAttack(int playerId, int territory);
   void changeOwner(int playerId, int territoryId, int newSoldiers);
+  void setContinentOwners();
   void Fortify(int playerId);
   std::vector<Continent> continents;
   std::vector<Territory> territories;
