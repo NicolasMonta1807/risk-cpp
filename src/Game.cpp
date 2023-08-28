@@ -138,7 +138,7 @@ void Game::allocateSoldiers()
   std::vector<Player>::iterator PlayerIt = this->players.begin();
   std::vector<Territory>::iterator TerritoryIt;
   std::vector<int>::iterator TerritoryAuxIt;
-  for (int i = 0; i < 12; i++)
+  for (int i = 0; i < 42; i++)
   {
     std::cout << "Es el turno de: " << PlayerIt->getName() << endl;
 
@@ -446,6 +446,47 @@ void Game::changeOwner(int playerId, int territoryId, int newSoldiers)
     }
   }
   territories[territoryId - 1].addSoldiers(newSoldiers);
+}
+
+void Game::setContinentOwners()
+{
+  std::vector<Player>::iterator PlayerIt;
+  std::vector<Continent>::iterator ContinentIt;
+  std::vector<int> TerritoriesInContinent;
+  std::vector<int> TerritoriesInPlayer;
+  bool owned;
+  for (ContinentIt = this->continents.begin(); ContinentIt != this->continents.end(); ContinentIt)
+  {
+    for (PlayerIt = this->players.begin(); PlayerIt != this->players.begin(); PlayerIt++)
+    {
+      TerritoriesInContinent = ContinentIt->getTerritories();
+      TerritoriesInPlayer = PlayerIt->getTerritories();
+      for (int i = 0; i < TerritoriesInContinent.size(); i++)
+      {
+        owned = false;
+        for (int j = 0; j < TerritoriesInPlayer.size(); j++)
+        {
+          if (TerritoriesInContinent[i] == TerritoriesInPlayer[j])
+          {
+            owned = true;
+            break;
+          }
+        }
+        if (!owned)
+        {
+          break;
+        }
+      }
+      if (owned)
+      {
+        ContinentIt->setOwner(PlayerIt->getId());
+      }
+    }
+    if (!owned)
+    {
+      ContinentIt->setOwner(0);
+    }
+  }
 }
 
 void Game::Attack(int playerId)
