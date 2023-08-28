@@ -138,7 +138,7 @@ void Game::allocateSoldiers()
   std::vector<Player>::iterator PlayerIt = this->players.begin();
   std::vector<Territory>::iterator TerritoryIt;
   std::vector<int>::iterator TerritoryAuxIt;
-  for (int i = 0; i < 42; i++)
+  for (int i = 0; i < 15; i++)
   {
     std::cout << "Es el turno de: " << PlayerIt->getName() << endl;
 
@@ -194,6 +194,7 @@ void Game::allocateSoldiers()
 
   while (playersToFortify.size() > 0)
   {
+    std::cout << "Es el turno de: " << PlayerIt->getName() << endl;
     printPlayerTerritories(*PlayerIt);
     std::cout << "¿Cual territorio desea fortificar?: ";
     cin >> territory;
@@ -452,36 +453,45 @@ void Game::setContinentOwners()
 {
   std::vector<Player>::iterator PlayerIt;
   std::vector<Continent>::iterator ContinentIt;
-  std::vector<int> TerritoriesInContinent;
-  std::vector<int> TerritoriesInPlayer;
   bool owned;
-  for (ContinentIt = this->continents.begin(); ContinentIt != this->continents.end(); ContinentIt)
+
+  for (ContinentIt = this->continents.begin(); ContinentIt != this->continents.end(); ++ContinentIt)
   {
-    for (PlayerIt = this->players.begin(); PlayerIt != this->players.begin(); PlayerIt++)
+    owned = false;
+    std::vector<int> TerritoriesInContinent = ContinentIt->getTerritories();
+
+    for (PlayerIt = this->players.begin(); PlayerIt != this->players.end(); ++PlayerIt)
     {
-      TerritoriesInContinent = ContinentIt->getTerritories();
-      TerritoriesInPlayer = PlayerIt->getTerritories();
+      bool playerOwnsAll = true;
+      std::vector<int> TerritoriesInPlayer = PlayerIt->getTerritories();
+
       for (int i = 0; i < TerritoriesInContinent.size(); i++)
       {
-        owned = false;
+        bool territoryOwned = false;
         for (int j = 0; j < TerritoriesInPlayer.size(); j++)
         {
           if (TerritoriesInContinent[i] == TerritoriesInPlayer[j])
           {
-            owned = true;
+            territoryOwned = true;
             break;
           }
         }
-        if (!owned)
+
+        if (!territoryOwned)
         {
+          playerOwnsAll = false;
           break;
         }
       }
-      if (owned)
+
+      if (playerOwnsAll)
       {
         ContinentIt->setOwner(PlayerIt->getId());
+        owned = true;
+        break;
       }
     }
+
     if (!owned)
     {
       ContinentIt->setOwner(0);
@@ -691,7 +701,7 @@ int Game::turn(int playerId)
     if (playerId == PlayerIt->getId())
       break;
   }
-
+  setContinentOwners();
   int newSoldiers = PlayerIt->getTerritories().size() / 3;
   if (newSoldiers < 3)
     newSoldiers = 3;
