@@ -138,7 +138,8 @@ void Game::allocateSoldiers()
   std::vector<Player>::iterator PlayerIt = this->players.begin();
   std::vector<Territory>::iterator TerritoryIt;
   std::vector<int>::iterator TerritoryAuxIt;
-  for (int i = 0; i < 15; i++)
+
+  for (int i = 0; i < 42; i++)
   {
     std::cout << "Es el turno de: " << PlayerIt->getName() << endl;
 
