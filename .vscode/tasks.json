@@ -16,15 +16,17 @@
         },
         {
             "type": "cppbuild",
-            "label": "C/C++: g++ build active file",
+            "label": "C/C++: g++ build main file",
             "command": "/usr/bin/g++",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "*.cpp",
+                "${workspaceFolder}/src/*.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
-                "-std=c++11"
+                "${workspaceFolder}/bin/${fileBasenameNoExtension}",
+                "--std=c++11",
+                "-I",
+                "${workspaceFolder}/include"
             ],
             "options": {
                 "cwd": "${fileDirname}"
