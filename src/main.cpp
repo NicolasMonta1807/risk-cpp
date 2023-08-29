@@ -6,13 +6,15 @@ using namespace std;
 
 int main()
 {
-  // TODO: Show all commands in help
   // TODO: Cuales quedan disponibles
   // Barra diferenciar turnos
   // letrero turno
   // mostrar los dados
   // mostrar cuantos puede desplazar
   // informar
+
+  welcome();
+
   Game *game = new Game();
   string userInput;
 
