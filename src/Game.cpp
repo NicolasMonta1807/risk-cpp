@@ -262,6 +262,16 @@ void Game::printPlayerTerritories(Player player)
 
 int Game::initialize()
 {
+
+  if (this->initialized)
+  {
+    std::cout << "------------------------------" << std::endl;
+    std::cout << "Este juego ya ha sido empezado" << std::endl;
+    std::cout << "------------------------------" << std::endl;
+    return -1;
+  }
+
+  this->initialized = true;
   int playerAmount = 0;
   do
   {
