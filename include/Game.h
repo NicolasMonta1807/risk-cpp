@@ -24,6 +24,8 @@ public:
 private:
   void allocateSoldiers();
   void createTerritories();
+  int countCards(Player player);
+  void completeExchange(int playerId, int exchange);
   void printPlayerTerritories(Player player);
   void placeArmies(int playerId);
   void Attack(int playerId);

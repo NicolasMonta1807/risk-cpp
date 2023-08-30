@@ -18,12 +18,19 @@ public:
   std::vector<int> getTerritories();
   void assignTerritory(int territoryId);
   void removeTerritory(int territoryId);
+  std::vector<int> getCards();
+  void addCard(int value, int type);
+  void removeCard(int value, int type);
+  void setExchangeCounter(int exchangeCounter);
+  int getExchangeCounter();
 
 private:
   int id;
+  int exchangeCounter;
   int soldiersToAllocate;
   std::string name;
   std::vector<int> territories;
+  std::vector<int> cards;
 };
 
 #endif
