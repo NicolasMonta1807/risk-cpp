@@ -139,7 +139,9 @@ void Game::allocateSoldiers()
 
   for (int i = 0; i < 6; i++)
   {
+    std::cout << "-----------------------" << std::endl;
     std::cout << "Es el turno de: " << PlayerIt->getName() << std::endl;
+    std::cout << "-----------------------" << std::endl;
 
     while (territory < 1 || territory > 42)
     {
@@ -170,8 +172,16 @@ void Game::allocateSoldiers()
     std::advance(TerritoryIt, territory - 1);
     TerritoryIt->addSoldiers(1);
 
-    std::cout << "Ha escogido el territorio: " << TerritoryIt->getName() << std::endl;
-    std::cout << "Con ID:                    " << TerritoryIt->getId() << std::endl;
+    std::cout << "---------------------------------------------------------" << std::endl;
+    std::cout << "Ha escogido el territorio " << TerritoryIt->getId() << ": " << TerritoryIt->getName() << std::endl;
+    std::cout << "---------------------------------------------------------" << std::endl;
+
+    do
+    {
+      std::cin.ignore();
+      std::cout << '\n'
+                << "Presiona una tecla para continuar..";
+    } while (std::cin.get() != '\n');
 
     PlayerIt++;
     if (PlayerIt == players.end())
@@ -193,7 +203,9 @@ void Game::allocateSoldiers()
 
   while (playersToFortify.size() > 0)
   {
+    std::cout << "-----------------------" << std::endl;
     std::cout << "Es el turno de: " << PlayerIt->getName() << std::endl;
+    std::cout << "-----------------------" << std::endl;
     printPlayerTerritories(*PlayerIt);
     std::cout << "¿Cual territorio desea fortificar?: ";
     std::cin >> territory;
@@ -203,7 +215,7 @@ void Game::allocateSoldiers()
       continue;
     }
     std::cout << "Usted tiene: " << PlayerIt->getSoldiersToAllocate() << " soldados para poner" << std::endl;
-    std::cout << "Cuantos soldados le va a meter?: ";
+    std::cout << "Cuantos soldados va a posicionar?: ";
     std::cin >> soldiersToFortify;
     if (PlayerIt->getSoldiersToAllocate() >= soldiersToFortify && soldiersToFortify > 0)
     {
@@ -211,10 +223,25 @@ void Game::allocateSoldiers()
       std::advance(TerritoryIt, territory - 1);
       TerritoryIt->addSoldiers(soldiersToFortify);
       PlayerIt->removeSoldiers(soldiersToFortify);
+      std::cout << "---------------------------------------------------------" << std::endl;
+      std::cout << TerritoryIt->getName() << " ha quedado con " << TerritoryIt->getSoldiers() << " soldados " << std::endl;
+      std::cout << "---------------------------------------------------------" << std::endl;
+      do
+      {
+        std::cin.ignore();
+        std::cout << '\n'
+                  << "Presiona una tecla para continuar..";
+      } while (std::cin.get() != '\n');
     }
     else
     {
       std::cout << "No tiene los suficientes soldados para hacer eso" << std::endl;
+      do
+      {
+        std::cin.ignore();
+        std::cout << '\n'
+                  << "Presiona una tecla para continuar..";
+      } while (std::cin.get() != '\n');
       continue;
     }
     playersToFortify.pop();
@@ -310,8 +337,6 @@ int Game::initialize()
   }
 
   allocateSoldiers();
-
-  std::cin.ignore();
 
   return 0;
 }
@@ -634,6 +659,17 @@ void Game::placeArmies(int playerId)
       std::advance(TerritoryIt, territory - 1);
       TerritoryIt->addSoldiers(soldiersToPlace);
       PlayerIt->removeSoldiers(soldiersToPlace);
+
+      std::cout << "---------------------------------------------------------" << std::endl;
+      std::cout << TerritoryIt->getName() << " ha quedado con " << TerritoryIt->getSoldiers() << " soldados " << std::endl;
+      std::cout << "---------------------------------------------------------" << std::endl;
+
+      do
+      {
+        std::cout << '\n'
+                  << "Presiona una tecla para continuar...";
+
+      } while (std::cin.get() != '\n');
     }
     else
     {
@@ -717,6 +753,10 @@ int Game::turn(int playerId)
     std::cout << "No es su turno" << std::endl;
     return 0;
   }
+
+  std::cout << "----------------------------------" << std::endl;
+  std::cout << "Es el turno del jugador: " << players[playerId - 1].getName() << std::endl;
+  std::cout << "----------------------------------" << std::endl;
 
   std::vector<Player>::iterator PlayerIt = this->players.begin();
   for (; PlayerIt != this->players.end(); PlayerIt++)
