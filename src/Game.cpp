@@ -127,6 +127,30 @@ bool searchTerritory(Player player, int id)
   return false;
 }
 
+int Game::countCards(Player player)
+{
+  if (player.getCards()[0] >= 3)
+  {
+    return 1;
+  }
+  else if (player.getCards()[1] >= 3)
+  {
+    return 2;
+  }
+  else if (player.getCards()[2] >= 3)
+  {
+    return 3;
+  }
+  else if (player.getCards()[0] >= 1 && player.getCards()[1] >= 1 && player.getCards()[2] >= 1)
+  {
+    return 4;
+  }
+  else
+  {
+    return 0;
+  }
+}
+
 void Game::allocateSoldiers()
 {
   int territory = 0;
@@ -536,6 +560,7 @@ void Game::setContinentOwners()
 void Game::Attack(int playerId)
 {
   char option;
+  bool firstConquered = false;
   while (option != 'n')
   {
     std::cout << "¿Desea atacar a un territorio?: (S/N)";
@@ -596,6 +621,26 @@ void Game::Attack(int playerId)
               std::cin >> soldiersToDeplace;
               this->territories[attackFrom - 1].removeSoldiers(soldiersToDeplace);
               changeOwner(playerId, attackTo, soldiersToDeplace);
+              if (!firstConquered)
+              {
+                srand(time(NULL));
+                int card = (rand() % 3) + 1;
+                this->players[playerId - 1].addCard(1, card);
+                firstConquered = true;
+                std::cout << "Usted ha ganado una carta!" << std::endl;
+                switch (card)
+                {
+                case 1:
+                  std::cout << "Esta carta es del tipo Infantería" << std::endl;
+                  break;
+                case 2:
+                  std::cout << "Esta carta es del tipo Caballería" << std::endl;
+                  break;
+                case 3:
+                  std::cout << "Esta carta es del tipo Artillería" << std::endl;
+                  break;
+                }
+              }
               break;
             }
           }
@@ -637,7 +682,24 @@ void Game::placeArmies(int playerId)
     if (PlayerIt->getId() == playerId)
       break;
   }
-
+  int exchange = countCards(*PlayerIt);
+  char option;
+  if (exchange > 0)
+  {
+    std::cout << "Puede intercambiar sus cartas! Esto le daría tropas extra" << std::endl;
+    std::cout << "¿Desea hacerlo? (s/n): ";
+    std::cin >> option;
+    option = tolower(option);
+    switch (option)
+    {
+    case 's':
+      completeExchange(playerId, exchange);
+      break;
+    case 'n':
+      std::cout << "Decidió no intercambiar cartas" << std::endl;
+      break;
+    }
+  }
   int territory;
   int soldiersToPlace;
   while (PlayerIt->getSoldiersToAllocate() > 0)
@@ -789,4 +851,46 @@ int Game::turn(int playerId)
   std::cin.ignore();
 
   return 1;
+}
+
+void Game::completeExchange(int playerId, int exchange)
+{
+  int value = 0;
+  this->players[playerId - 1].setExchangeCounter(this->players[playerId - 1].getExchangeCounter() + 1);
+  int counter = this->players[playerId - 1].getExchangeCounter();
+  switch (counter)
+  {
+  case 1:
+    value = 4;
+    break;
+  case 2:
+    value = 6;
+    break;
+  case 3:
+    value = 8;
+    break;
+  case 4:
+    value = 10;
+    break;
+  case 5:
+    value = 12;
+    break;
+  case 6:
+    value = 15;
+  default:
+    value = 15 + (5 * (counter - 6));
+    break;
+  }
+
+  if (exchange < 4)
+  {
+    this->players[playerId - 1].removeCard(3, exchange);
+  }
+  else
+  {
+    this->players[playerId - 1].removeCard(1, 1);
+    this->players[playerId - 1].removeCard(1, 2);
+    this->players[playerId - 1].removeCard(1, 3);
+  }
+  this->players[playerId - 1].setSoldiersToAllocate(this->players[playerId - 1].getSoldiersToAllocate() + value);
 }

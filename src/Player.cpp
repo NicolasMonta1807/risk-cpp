@@ -4,6 +4,8 @@ Player::Player(int id, std::string name)
 {
   this->id = id;
   this->name = name;
+  this->exchangeCounter = 0;
+  this->cards = {3, 0, 0};
 }
 
 int Player::getId()
@@ -11,6 +13,14 @@ int Player::getId()
   return this->id;
 }
 
+void Player::setExchangeCounter(int exchangeCounter)
+{
+  this->exchangeCounter = exchangeCounter;
+}
+int Player::getExchangeCounter()
+{
+  return this->exchangeCounter;
+}
 void Player::setSoldiersToAllocate(int soldiersToAllocate)
 {
   this->soldiersToAllocate = soldiersToAllocate;
@@ -51,4 +61,18 @@ void Player::removeTerritory(int territoryId)
 std::vector<int> Player::getTerritories()
 {
   return this->territories;
+}
+
+std::vector<int> Player::getCards()
+{
+  return this->cards;
+}
+void Player::addCard(int value, int type)
+{
+  this->cards[type - 1] = this->cards[type - 1] + value;
+}
+
+void Player::removeCard(int value, int type)
+{
+  this->cards[type - 1] = this->cards[type - 1] - value;
 }
