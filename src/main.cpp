@@ -6,12 +6,6 @@ using namespace std;
 
 int main()
 {
-  // TODO: Cuales quedan disponibles
-  // Barra diferenciar turnos
-  // letrero turno
-  // mostrar los dados
-  // mostrar cuantos puede desplazar
-  // informar
 
   welcome();
 
@@ -24,8 +18,8 @@ int main()
     getline(cin, userInput);
     if (handleCommand(game, userInput) == -1)
     {
-      cout << "Invalid command: " << userInput << endl;
-      cout << "Type 'help' for a list of commands." << endl;
+      cout << "Comando invalido: " << userInput << endl;
+      cout << "Escriba 'ayuda' para la lista de comandos" << endl;
     }
     continue;
   }

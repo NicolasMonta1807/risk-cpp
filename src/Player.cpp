@@ -5,7 +5,7 @@ Player::Player(int id, std::string name)
   this->id = id;
   this->name = name;
   this->exchangeCounter = 0;
-  this->cards = {3, 0, 0};
+  this->cards = {0, 0, 0};
 }
 
 int Player::getId()
