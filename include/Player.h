@@ -1,12 +1,20 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include <string>
-#include <list>
+#include <vector>
+
 #include "Territory.h"
 
 class Player
 {
+private:
+  int id;
+  int exchangeCounter;
+  int soldiersToAllocate;
+  std::string name;
+  std::vector<Territory *> territories;
+  std::vector<int> cards;
+
 public:
   Player();
   Player(int id, std::string name);
@@ -15,22 +23,14 @@ public:
   void setSoldiersToAllocate(int soldiersToAllocate);
   void removeSoldiers(int soldiers);
   int getSoldiersToAllocate();
-  std::vector<int> getTerritories();
-  void assignTerritory(int territoryId);
-  void removeTerritory(int territoryId);
+  std::vector<Territory *> *getTerritories();
+  void assignTerritory(Territory *territory);
+  void removeTerritory(Territory *territory);
   std::vector<int> getCards();
   void addCard(int value, int type);
   void removeCard(int value, int type);
   void setExchangeCounter(int exchangeCounter);
   int getExchangeCounter();
-
-private:
-  int id;
-  int exchangeCounter;
-  int soldiersToAllocate;
-  std::string name;
-  std::vector<int> territories;
-  std::vector<int> cards;
 };
 
 #endif
