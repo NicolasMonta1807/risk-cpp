@@ -1,45 +1,46 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Player.h"
-#include "Continent.h"
-#include "Territory.h"
 #include <string>
 #include <list>
 #include <queue>
+#include <iostream>
+#include <iomanip>
+#include <random>
+
+#include "Player.h"
+#include "Continent.h"
+#include "Territory.h"
 
 class Game
 {
 private:
-  std::vector<Continent> continents;
-  std::vector<Territory> territories;
-  std::vector<Player> players;
-  std::queue<int> playerIds;
   bool initialized;
+  std::vector<Continent *> continents;
+  std::vector<Territory *> territories;
+  std::vector<Player *> players;
+  std::queue<int> playerIds;
 
   void allocateSoldiers();
   void createTerritories();
-  int countCards(Player player);
+  int countCards(Player *player);
   void completeExchange(int playerId, int exchange);
-  void printPlayerTerritories(Player player);
+  void printPlayerTerritories(Player *player);
   void placeArmies(int playerId);
   void Attack(int playerId);
   void printAdjacentTerritories(int territory, int playerId, bool adjacentOwned);
-  bool isValidToAttack(int playerId, int territory);
-  void changeOwner(int playerId, int territoryId, int newSoldiers);
+  bool isValidToAttack(Player *player, Territory *territory);
+  void changeOwner(Player *player, Territory *territory, int newSoldiers);
   void setContinentOwners();
   void Fortify(int playerId);
 
 public:
   Game();
-  std::vector<Continent> getContinents();
-  std::vector<Territory> getTerritories();
   int initialize();
   int initializeFromFile(std::string filename);
   int save(std::string filename);
   int compressedSave(std::string filename);
   int turn(int playerId);
-  std::vector<Player> getPlayers();
 };
 
 #endif

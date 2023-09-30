@@ -80,3 +80,29 @@ void Player::removeCard(int value, int type)
 {
   this->cards[type - 1] = this->cards[type - 1] - value;
 }
+
+bool Player::isOwned(Territory *territory)
+{
+  std::vector<Territory *>::iterator it = this->territories.begin();
+  while (it != this->territories.end())
+  {
+    if ((*it)->getId() == territory->getId())
+    {
+      return true;
+    }
+    it++;
+  }
+  return false;
+}
+
+void Player::printOwnedTerritories()
+{
+  std::vector<Territory *>::iterator TerritoryIt = this->territories.begin();
+  std::cout << "Sus territorios son: " << std::endl;
+  std::cout << "ID   Nombre" << std::endl;
+
+  for (; TerritoryIt != this->territories.end(); TerritoryIt++)
+  {
+    std::cout << (*TerritoryIt)->getId() << "  " << (*TerritoryIt)->getName() << " - Soldados " << (*TerritoryIt)->getSoldiers() << std::endl;
+  }
+}

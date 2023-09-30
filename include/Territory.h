@@ -13,14 +13,15 @@ private:
   std::vector<Territory *> neighbors;
 
 public:
-  Territory(int id, std::string name, std::vector<int> neighbors);
+  Territory(int id, std::string name);
   std::vector<Territory *> *getNeighbors();
+  void setNeighbors(std::vector<Territory *> neighbors);
   std::string getName();
   int getId();
   int getSoldiers();
   void addSoldiers(int amount);
   void removeSoldiers(int amount);
-  bool isNeighbor(Territory *territory1, Territory *territory2);
+  bool isNeighbor(Territory *territoryToCheck);
 };
 
 #endif

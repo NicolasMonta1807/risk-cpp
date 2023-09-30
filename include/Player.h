@@ -2,6 +2,7 @@
 #define _PLAYER_H_
 
 #include <vector>
+#include <iostream>
 
 #include "Territory.h"
 
@@ -16,7 +17,6 @@ private:
   std::vector<int> cards;
 
 public:
-  Player();
   Player(int id, std::string name);
   std::string getName();
   int getId();
@@ -31,6 +31,8 @@ public:
   void removeCard(int value, int type);
   void setExchangeCounter(int exchangeCounter);
   int getExchangeCounter();
+  bool isOwned(Territory *territory);
+  void printOwnedTerritories();
 };
 
 #endif
