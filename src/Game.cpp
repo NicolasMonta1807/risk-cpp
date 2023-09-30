@@ -424,18 +424,6 @@ void Game::printAdjacentTerritories(int territory, int playerId, bool adjacentOw
   }
 }
 
-bool Game::isNeighbor(int territoryFrom, int territoryTo)
-{
-  Territory territory = this->territories[territoryFrom - 1];
-  std::vector<int> neighbors = territory.getNeighbors();
-  for (int i = 0; i < neighbors.size(); i++)
-  {
-    if (neighbors[i] == territoryTo)
-      return true;
-  }
-  return false;
-}
-
 bool Game::isValidToAttack(int playerId, int territory)
 {
   Player player = this->players[playerId - 1];
