@@ -1,12 +1,12 @@
 #include "Continent.h"
 #include <string>
 
-Continent::Continent(std::string name, std::vector<int> territories, int owner, int value)
+Continent::Continent(std::string name, std::vector<Territory *> territories, Player *owner, int value)
 {
-  this->owner = owner;
-  this->name = name;
-  this->territories = territories;
   this->value = value;
+  this->name = name;
+  this->owner = owner;
+  this->territories = territories;
 }
 
 int Continent::getValue()
@@ -14,17 +14,17 @@ int Continent::getValue()
   return this->value;
 }
 
-void Continent::setOwner(int playerId)
+void Continent::setOwner(Player *newOwner)
 {
-  this->owner = playerId;
+  this->owner = newOwner;
 }
 
-int Continent::getOwner()
+Player *Continent::getOwner()
 {
   return owner;
 }
 
-std::vector<int> Continent::getTerritories()
+std::vector<Territory *> Continent::getTerritories()
 {
   return this->territories;
 }
