@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Territory.h"
+#include "Card.h"
 
 class Player
 {
@@ -14,7 +15,7 @@ private:
   int soldiersToAllocate;
   std::string name;
   std::vector<Territory *> territories;
-  std::vector<int> cards;
+  std::vector<Card *> cards;
 
 public:
   Player(int id, std::string name);
@@ -26,9 +27,9 @@ public:
   std::vector<Territory *> *getTerritories();
   void assignTerritory(Territory *territory);
   void removeTerritory(Territory *territory);
-  std::vector<int> getCards();
-  void addCard(int value, int type);
-  void removeCard(int value, int type);
+  std::vector<Card *> getCards();
+  void addCard(Card *newCard);
+  void removeCard(Card *cardToRemove);
   void setExchangeCounter(int exchangeCounter);
   int getExchangeCounter();
   bool isOwned(Territory *territory);
