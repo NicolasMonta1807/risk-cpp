@@ -201,6 +201,50 @@ void Game::createTerritories()
   this->territories.push_back(Indonesia);
   this->territories.push_back(NuevaGuinea);
   this->territories.push_back(AustraliaOccidental);
+
+  this->cards.push_back(new Card('s', Alaska));
+  this->cards.push_back(new Card('h', Alberta));
+  this->cards.push_back(new Card('c', AmericaCentral));
+  this->cards.push_back(new Card('s', EstadosUnidosOrientales));
+  this->cards.push_back(new Card('h', Groenlandia));
+  this->cards.push_back(new Card('c', TerritorioNoroccidental));
+  this->cards.push_back(new Card('s', Ontario));
+  this->cards.push_back(new Card('h', Quebec));
+  this->cards.push_back(new Card('c', EstadosUnidosOccidentales));
+  this->cards.push_back(new Card('s', GranBretania));
+  this->cards.push_back(new Card('h', Islandia));
+  this->cards.push_back(new Card('c', EuropaDelNorte));
+  this->cards.push_back(new Card('s', Escandinavia));
+  this->cards.push_back(new Card('h', EuropaDelSur));
+  this->cards.push_back(new Card('c', Ucrania));
+  this->cards.push_back(new Card('s', EuropaOccidental));
+  this->cards.push_back(new Card('h', Afghanistan));
+  this->cards.push_back(new Card('c', China));
+  this->cards.push_back(new Card('s', India));
+  this->cards.push_back(new Card('h', Irkutsk));
+  this->cards.push_back(new Card('c', Japon));
+  this->cards.push_back(new Card('s', Kamchatka));
+  this->cards.push_back(new Card('h', MedioOriente));
+  this->cards.push_back(new Card('c', Mongolia));
+  this->cards.push_back(new Card('s', Siam));
+  this->cards.push_back(new Card('h', Siberia));
+  this->cards.push_back(new Card('c', Ural));
+  this->cards.push_back(new Card('s', Yakutsk));
+  this->cards.push_back(new Card('h', Argentina));
+  this->cards.push_back(new Card('c', Brasil));
+  this->cards.push_back(new Card('s', Peru));
+  this->cards.push_back(new Card('h', Colombia));
+  this->cards.push_back(new Card('c', Congo));
+  this->cards.push_back(new Card('s', AfricaOriental));
+  this->cards.push_back(new Card('h', Egipto));
+  this->cards.push_back(new Card('c', Madagascar));
+  this->cards.push_back(new Card('s', AfricaDelNorte));
+  this->cards.push_back(new Card('h', AfricaDelSur));
+  this->cards.push_back(new Card('c', AustraliaOriental));
+  this->cards.push_back(new Card('s', Indonesia));
+  this->cards.push_back(new Card('h', NuevaGuinea));
+  this->cards.push_back(new Card('c', AustraliaOccidental));
+  std::random_shuffle(cards.begin(), cards.end());
 }
 
 Game::Game()
@@ -239,19 +283,42 @@ void printMap()
 
 int Game::countCards(Player *player)
 {
-  if (player->getCards()[0] >= 3)
+  int soldier = 0;
+  int horse = 0;
+  int canon = 0;
+
+  if (player->getCards().size() != 0)
+    return 0;
+
+  for (int i = 0; i < player->getCards().size(); i++)
+  {
+    if (player->getCards()[i]->getType() == 's')
+    {
+      soldier++;
+    }
+    if (player->getCards()[i]->getType() == 'h')
+    {
+      horse++;
+    }
+    if (player->getCards()[i]->getType() == 'c')
+    {
+      canon++;
+    }
+  }
+
+  if (soldier >= 3)
   {
     return 1;
   }
-  else if (player->getCards()[1] >= 3)
+  else if (horse >= 3)
   {
     return 2;
   }
-  else if (player->getCards()[2] >= 3)
+  else if (canon >= 3)
   {
     return 3;
   }
-  else if (player->getCards()[0] >= 1 && player->getCards()[1] >= 1 && player->getCards()[2] >= 1)
+  else if (soldier >= 1 && horse >= 1 && canon >= 1)
   {
     return 4;
   }
@@ -736,20 +803,21 @@ void Game::Attack(int playerId)
               changeOwner(this->players[playerId], this->territories[attackTo - 1], soldiersToDeplace);
               if (!firstConquered)
               {
-                srand(time(NULL));
-                int card = (rand() % 3) + 1;
-                this->players[playerId - 1]->addCard(1, card);
+                this->players[playerId - 1]->addCard(this->cards[0]);
+                Card *tempCard = this->cards[0];
+                this->cards.pop_front();
+                this->cards.push_back(tempCard);
                 firstConquered = true;
                 std::cout << "Usted ha ganado una carta!" << std::endl;
-                switch (card)
+                switch (tempCard->getType())
                 {
-                case 1:
+                case 's':
                   std::cout << "Esta carta es del tipo Infantería" << std::endl;
                   break;
-                case 2:
+                case 'h':
                   std::cout << "Esta carta es del tipo Caballería" << std::endl;
                   break;
-                case 3:
+                case 'c':
                   std::cout << "Esta carta es del tipo Artillería" << std::endl;
                   break;
                 }
@@ -992,6 +1060,8 @@ int Game::turn(int playerId)
 
 void Game::completeExchange(int playerId, int exchange)
 {
+  std::vector<Card *>::iterator cardIt;
+  int cardCounter = 0; // Contador de cartas que se intercambiarán, llega hasta 3
   int value = 0;
   this->players[playerId - 1]->setExchangeCounter(this->players[playerId - 1]->getExchangeCounter() + 1);
   int counter = this->players[playerId - 1]->getExchangeCounter();
@@ -1018,16 +1088,96 @@ void Game::completeExchange(int playerId, int exchange)
     value = 15 + (5 * (counter - 6));
     break;
   }
-
-  if (exchange < 4)
+  if (exchange == 1)
   {
-    this->players[playerId - 1]->removeCard(3, exchange);
+    for (cardIt = this->players[playerId - 1]->getCards().begin(); cardIt != this->players[playerId - 1]->getCards().end(); cardIt++)
+    {
+      if ((*cardIt)->getType() == 's' && cardCounter < 3)
+      {
+        if (this->players[playerId - 1]->isOwned((*cardIt)->getTerritory()))
+        {
+          (*cardIt)->getTerritory()->addSoldiers(2);
+          std::cout << "Se añadieron 2 soldados al territorio: " << (*cardIt)->getTerritory()->getName() << std::endl;
+        }
+        this->players[playerId - 1]->removeCard((*cardIt));
+        cardCounter++;
+      }
+    }
+  }
+  else if (exchange == 2)
+  {
+    for (cardIt = this->players[playerId - 1]->getCards().begin(); cardIt != this->players[playerId - 1]->getCards().end(); cardIt++)
+    {
+      if ((*cardIt)->getType() == 'h' && cardCounter < 3)
+      {
+        if (this->players[playerId - 1]->isOwned((*cardIt)->getTerritory()))
+        {
+          (*cardIt)->getTerritory()->addSoldiers(2);
+          std::cout << "Se añadieron 2 soldados al territorio: " << (*cardIt)->getTerritory()->getName() << std::endl;
+        }
+        this->players[playerId - 1]->removeCard((*cardIt));
+        cardCounter++;
+      }
+    }
+  }
+  else if (exchange == 3)
+  {
+    for (cardIt = this->players[playerId - 1]->getCards().begin(); cardIt != this->players[playerId - 1]->getCards().end(); cardIt++)
+    {
+      if (this->players[playerId - 1]->isOwned((*cardIt)->getTerritory()))
+      {
+        (*cardIt)->getTerritory()->addSoldiers(2);
+        std::cout << "Se añadieron 2 soldados al territorio: " << (*cardIt)->getTerritory()->getName() << std::endl;
+      }
+      if ((*cardIt)->getType() == 'c' && cardCounter < 3)
+      {
+        this->players[playerId - 1]->removeCard((*cardIt));
+        cardCounter++;
+      }
+    }
   }
   else
   {
-    this->players[playerId - 1]->removeCard(1, 1);
-    this->players[playerId - 1]->removeCard(1, 2);
-    this->players[playerId - 1]->removeCard(1, 3);
+    int soldier = 0;
+    int horseman = 0;
+    int artillery = 0;
+    for (cardIt = this->players[playerId - 1]->getCards().begin(); cardIt != this->players[playerId - 1]->getCards().end(); cardIt++)
+    {
+      if (cardCounter < 3)
+      {
+        if ((*cardIt)->getType() == 's' && soldier < 1)
+        {
+          if (this->players[playerId - 1]->isOwned((*cardIt)->getTerritory()))
+          {
+            (*cardIt)->getTerritory()->addSoldiers(2);
+            std::cout << "Se añadieron 2 soldados al territorio: " << (*cardIt)->getTerritory()->getName() << std::endl;
+          }
+          this->players[playerId - 1]->removeCard((*cardIt));
+          soldier++;
+        }
+        if ((*cardIt)->getType() == 'h' && horseman < 1)
+        {
+          if (this->players[playerId - 1]->isOwned((*cardIt)->getTerritory()))
+          {
+            (*cardIt)->getTerritory()->addSoldiers(2);
+            std::cout << "Se añadieron 2 soldados al territorio: " << (*cardIt)->getTerritory()->getName() << std::endl;
+          }
+          this->players[playerId - 1]->removeCard((*cardIt));
+          horseman++;
+        }
+        if ((*cardIt)->getType() == 'c' && artillery < 1)
+        {
+          if (this->players[playerId - 1]->isOwned((*cardIt)->getTerritory()))
+          {
+            (*cardIt)->getTerritory()->addSoldiers(2);
+            std::cout << "Se añadieron 2 soldados al territorio: " << (*cardIt)->getTerritory()->getName() << std::endl;
+          }
+          this->players[playerId - 1]->removeCard((*cardIt));
+          artillery++;
+        }
+        cardCounter++;
+      }
+    }
   }
   this->players[playerId - 1]->setSoldiersToAllocate(this->players[playerId - 1]->getSoldiersToAllocate() + value);
 }

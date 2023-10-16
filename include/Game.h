@@ -3,11 +3,13 @@
 
 #include <string>
 #include <list>
+#include <vector>
 #include <queue>
+#include <deque>
 #include <iostream>
 #include <iomanip>
 #include <random>
-
+#include <algorithm>
 #include "Player.h"
 #include "Continent.h"
 #include "Territory.h"
@@ -19,6 +21,7 @@ private:
   std::vector<Continent *> continents;
   std::vector<Territory *> territories;
   std::vector<Player *> players;
+  std::deque<Card *> cards;
   std::queue<int> playerIds;
 
   void allocateSoldiers();

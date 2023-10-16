@@ -7,7 +7,7 @@ Player::Player(int id, std::string name)
   this->soldiersToAllocate = 0;
   this->name = name;
   this->territories = {};
-  this->cards = {0, 0, 0};
+  this->cards = {};
 }
 
 int Player::getId()
@@ -67,18 +67,26 @@ std::vector<Territory *> *Player::getTerritories()
   return &this->territories;
 }
 
-std::vector<int> Player::getCards()
+std::vector<Card *> Player::getCards()
 {
   return this->cards;
 }
-void Player::addCard(int value, int type)
+
+void Player::addCard(Card *newCard)
 {
-  this->cards[type - 1] = this->cards[type - 1] + value;
+  this->cards.push_back(newCard);
 }
 
-void Player::removeCard(int value, int type)
+void Player::removeCard(Card *cardToRemove)
 {
-  this->cards[type - 1] = this->cards[type - 1] - value;
+  std::vector<Card *>::iterator cardIt;
+  for (cardIt = this->cards.begin(); cardIt != this->cards.end(); cardIt++)
+  {
+    if ((*cardIt)->getTerritory()->getId() == cardToRemove->getTerritory()->getId())
+    {
+      this->cards.erase(cardIt);
+    }
+  }
 }
 
 bool Player::isOwned(Territory *territory)
