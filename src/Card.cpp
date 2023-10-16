@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Card.h"
 
-Card::Card(char type, Territoy *territory)
+Card::Card(char type, Territory *territory)
 {
     this->type = type;
     this->territory = territory;

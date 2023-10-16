@@ -7,7 +7,7 @@ Player::Player(int id, std::string name)
   this->soldiersToAllocate = 0;
   this->name = name;
   this->territories = {};
-  this->cards = {0, 0, 0};
+  this->cards = {};
 }
 
 int Player::getId()
@@ -71,6 +71,7 @@ std::vector<Card *> Player::getCards()
 {
   return this->cards;
 }
+
 void Player::addCard(Card *newCard)
 {
   this->cards.push_back(newCard);

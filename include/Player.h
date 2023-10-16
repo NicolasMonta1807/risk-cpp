@@ -28,6 +28,7 @@ public:
   void assignTerritory(Territory *territory);
   void removeTerritory(Territory *territory);
   std::vector<Card *> getCards();
+  int countCards();
   void addCard(Card *newCard);
   void removeCard(Card *cardToRemove);
   void setExchangeCounter(int exchangeCounter);

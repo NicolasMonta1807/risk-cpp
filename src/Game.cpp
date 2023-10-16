@@ -286,6 +286,10 @@ int Game::countCards(Player *player)
   int soldier = 0;
   int horse = 0;
   int canon = 0;
+
+  if (player->getCards().size() != 0)
+    return 0;
+
   for (int i = 0; i < player->getCards().size(); i++)
   {
     if (player->getCards()[i]->getType() == 's')
