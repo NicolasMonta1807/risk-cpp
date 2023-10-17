@@ -202,48 +202,48 @@ void Game::createTerritories()
   this->territories.push_back(NuevaGuinea);
   this->territories.push_back(AustraliaOccidental);
 
-  this->cards.push_back(new Card('s', Alaska));
-  this->cards.push_back(new Card('h', Alberta));
-  this->cards.push_back(new Card('c', AmericaCentral));
-  this->cards.push_back(new Card('s', EstadosUnidosOrientales));
-  this->cards.push_back(new Card('h', Groenlandia));
-  this->cards.push_back(new Card('c', TerritorioNoroccidental));
-  this->cards.push_back(new Card('s', Ontario));
-  this->cards.push_back(new Card('h', Quebec));
-  this->cards.push_back(new Card('c', EstadosUnidosOccidentales));
-  this->cards.push_back(new Card('s', GranBretania));
-  this->cards.push_back(new Card('h', Islandia));
-  this->cards.push_back(new Card('c', EuropaDelNorte));
-  this->cards.push_back(new Card('s', Escandinavia));
-  this->cards.push_back(new Card('h', EuropaDelSur));
-  this->cards.push_back(new Card('c', Ucrania));
-  this->cards.push_back(new Card('s', EuropaOccidental));
-  this->cards.push_back(new Card('h', Afghanistan));
-  this->cards.push_back(new Card('c', China));
-  this->cards.push_back(new Card('s', India));
-  this->cards.push_back(new Card('h', Irkutsk));
-  this->cards.push_back(new Card('c', Japon));
-  this->cards.push_back(new Card('s', Kamchatka));
-  this->cards.push_back(new Card('h', MedioOriente));
-  this->cards.push_back(new Card('c', Mongolia));
-  this->cards.push_back(new Card('s', Siam));
-  this->cards.push_back(new Card('h', Siberia));
-  this->cards.push_back(new Card('c', Ural));
-  this->cards.push_back(new Card('s', Yakutsk));
-  this->cards.push_back(new Card('h', Argentina));
-  this->cards.push_back(new Card('c', Brasil));
-  this->cards.push_back(new Card('s', Peru));
-  this->cards.push_back(new Card('h', Colombia));
-  this->cards.push_back(new Card('c', Congo));
-  this->cards.push_back(new Card('s', AfricaOriental));
-  this->cards.push_back(new Card('h', Egipto));
-  this->cards.push_back(new Card('c', Madagascar));
-  this->cards.push_back(new Card('s', AfricaDelNorte));
-  this->cards.push_back(new Card('h', AfricaDelSur));
-  this->cards.push_back(new Card('c', AustraliaOriental));
-  this->cards.push_back(new Card('s', Indonesia));
-  this->cards.push_back(new Card('h', NuevaGuinea));
-  this->cards.push_back(new Card('c', AustraliaOccidental));
+  this->cards.push_back(new Card(1, 's', Alaska));
+  this->cards.push_back(new Card(2, 'h', Alberta));
+  this->cards.push_back(new Card(3, 'c', AmericaCentral));
+  this->cards.push_back(new Card(4, 's', EstadosUnidosOrientales));
+  this->cards.push_back(new Card(5, 'h', Groenlandia));
+  this->cards.push_back(new Card(6, 'c', TerritorioNoroccidental));
+  this->cards.push_back(new Card(7, 's', Ontario));
+  this->cards.push_back(new Card(8, 'h', Quebec));
+  this->cards.push_back(new Card(9, 'c', EstadosUnidosOccidentales));
+  this->cards.push_back(new Card(10, 's', GranBretania));
+  this->cards.push_back(new Card(11, 'h', Islandia));
+  this->cards.push_back(new Card(12, 'c', EuropaDelNorte));
+  this->cards.push_back(new Card(13, 's', Escandinavia));
+  this->cards.push_back(new Card(14, 'h', EuropaDelSur));
+  this->cards.push_back(new Card(15, 'c', Ucrania));
+  this->cards.push_back(new Card(16, 's', EuropaOccidental));
+  this->cards.push_back(new Card(17, 'h', Afghanistan));
+  this->cards.push_back(new Card(18, 'c', China));
+  this->cards.push_back(new Card(19, 's', India));
+  this->cards.push_back(new Card(20, 'h', Irkutsk));
+  this->cards.push_back(new Card(21, 'c', Japon));
+  this->cards.push_back(new Card(22, 's', Kamchatka));
+  this->cards.push_back(new Card(23, 'h', MedioOriente));
+  this->cards.push_back(new Card(24, 'c', Mongolia));
+  this->cards.push_back(new Card(25, 's', Siam));
+  this->cards.push_back(new Card(26, 'h', Siberia));
+  this->cards.push_back(new Card(27, 'c', Ural));
+  this->cards.push_back(new Card(28, 's', Yakutsk));
+  this->cards.push_back(new Card(29, 'h', Argentina));
+  this->cards.push_back(new Card(30, 'c', Brasil));
+  this->cards.push_back(new Card(31, 's', Peru));
+  this->cards.push_back(new Card(32, 'h', Colombia));
+  this->cards.push_back(new Card(33, 'c', Congo));
+  this->cards.push_back(new Card(34, 's', AfricaOriental));
+  this->cards.push_back(new Card(35, 'h', Egipto));
+  this->cards.push_back(new Card(36, 'c', Madagascar));
+  this->cards.push_back(new Card(37, 's', AfricaDelNorte));
+  this->cards.push_back(new Card(38, 'h', AfricaDelSur));
+  this->cards.push_back(new Card(39, 'c', AustraliaOriental));
+  this->cards.push_back(new Card(40, 's', Indonesia));
+  this->cards.push_back(new Card(41, 'h', NuevaGuinea));
+  this->cards.push_back(new Card(42, 'c', AustraliaOccidental));
   std::random_shuffle(cards.begin(), cards.end());
 }
 
@@ -528,16 +528,88 @@ int Game::initializeFromFile(std::string filename)
   return 0;
 }
 
+std::string Game::generateMessage()
+{
+  std::string message = "";
+
+  message += std::to_string(this->players.size());
+
+  for (int i = 0; i < this->players.size(); i++)
+  {
+    message += std::to_string(this->players[i]->getId()) + "," + this->players[i]->getName() += "," + std::to_string(this->players[i]->getTerritories()->size()) += ",";
+    for (int j = 0; j < this->players[i]->getTerritories()->size(); j++)
+    {
+      message += std::to_string((*this->players[i]->getTerritories())[j]->getId()) + "," + std::to_string((*this->players[i]->getTerritories())[j]->getSoldiers()) + ",";
+    }
+    message += std::to_string(this->players[i]->getCards().size()) += ",";
+    for (int j = 0; j < this->players[i]->getCards().size(); j++)
+    {
+      if (j == this->players[i]->getCards().size() - 1)
+      {
+        message += std::to_string(this->players[i]->getCards()[j]->getId());
+        break;
+      }
+      message += std::to_string(this->players[i]->getCards()[j]->getId()) += ",";
+    }
+    message += '\n';
+  }
+
+  return message;
+}
+
 int Game::save(std::string filename)
 {
-  std::cout << "Saving to: " << filename << std::endl;
-  return 0;
+  if (filename.substr(filename.length() - 4) != ".txt")
+  {
+    std::cout << "El nombre del archivo debe terminar en .txt" << std::endl;
+    return -1;
+  }
+
+  std::fstream file(filename, std::ios::out);
+
+  if (filename == "")
+  {
+    std::cout << "No se ha especificado un nombre de archivo" << std::endl;
+    return -1;
+  }
+
+  std::string message = this->generateMessage();
+  file << message;
+
+  file.close();
+  return 1;
 }
 
 int Game::compressedSave(std::string filename)
 {
-  std::cout << "Saving compressed to: " << filename << std::endl;
-  return 0;
+  std::string message = this->generateMessage();
+  std::unordered_map<char, int> frequencies;
+
+  for (char c : message)
+  {
+    frequencies[c]++;
+  }
+
+  HuffmanTree *tree = new HuffmanTree(frequencies);
+  int uniqueChars = frequencies.size();
+
+  int size = message.size();
+  std::string encodedMessage = tree->encode(message);
+
+  std::ofstream file(filename, std::ios::binary);
+
+  file.write((char *)&uniqueChars, sizeof(uniqueChars));
+
+  for (auto pair : frequencies)
+  {
+    file.write((char *)&pair.first, sizeof(pair.first));
+    file.write((char *)&pair.second, sizeof(pair.second));
+  }
+
+  file.write((char *)&size, sizeof(size));
+  file.write((char *)&encodedMessage, sizeof(encodedMessage));
+
+  return 1;
 }
 
 void Game::printAdjacentTerritories(int territory, int playerId, bool adjacentOwned)

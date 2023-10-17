@@ -10,9 +10,13 @@
 #include <iomanip>
 #include <random>
 #include <algorithm>
+#include <fstream>
+#include <unordered_map>
+
 #include "Player.h"
 #include "Continent.h"
 #include "Territory.h"
+#include "HuffmanTree.h"
 
 class Game
 {
@@ -35,6 +39,7 @@ private:
   void changeOwner(Player *player, Territory *territory, int newSoldiers);
   void setContinentOwners();
   void Fortify(int playerId);
+  std::string generateMessage();
 
 public:
   Game();
