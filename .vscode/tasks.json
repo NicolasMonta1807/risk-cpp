@@ -23,7 +23,7 @@
                 "-g",
                 "${workspaceFolder}/src/*.cpp",
                 "-o",
-                "${workspaceFolder}/bin/${fileBasenameNoExtension}",
+                "${workspaceFolder}/bin/main",
                 "--std=c++11",
                 "-I",
                 "${workspaceFolder}/include"

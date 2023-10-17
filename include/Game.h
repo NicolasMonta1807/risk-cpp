@@ -11,7 +11,7 @@
 #include <random>
 #include <algorithm>
 #include <fstream>
-#include <unordered_map>
+#include <bitset>
 
 #include "Player.h"
 #include "Continent.h"

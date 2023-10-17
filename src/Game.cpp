@@ -524,7 +524,52 @@ int Game::initialize()
 
 int Game::initializeFromFile(std::string filename)
 {
-  std::cout << "Initializing from file: " << filename << std::endl;
+  std::ifstream archivoEntrada(filename, std::ios::binary);
+
+  if (archivoEntrada.is_open())
+  {
+    // Leer n (2 bytes) desde el archivo
+    int n;
+    archivoEntrada.read(reinterpret_cast<char *>(&n), sizeof(n));
+
+    // Crear un mapa para almacenar los pares de caracteres y sus frecuencias
+    std::map<char, int> frecuencias;
+
+    // Leer ci y fi para cada caracter desde el archivo
+    for (int i = 0; i < n; ++i)
+    {
+      char ci;
+      int fi;
+      archivoEntrada.read(&ci, sizeof(ci));
+      archivoEntrada.read(reinterpret_cast<char *>(&fi), sizeof(fi));
+      frecuencias[ci] = fi;
+    }
+
+    // Leer w (8 bytes) desde el archivo
+    int w;
+    archivoEntrada.read(reinterpret_cast<char *>(&w), sizeof(w));
+
+    // Leer la secuencia binaria desde el archivo
+    std::string binary_code;
+    char byte;
+    while (archivoEntrada.read(&byte, sizeof(byte)))
+    {
+      binary_code += std::bitset<8>(byte).to_string();
+    }
+
+    HuffmanTree *tree = new HuffmanTree(frecuencias);
+    std::string message = tree->decode(binary_code);
+
+    std::cout << message << std::endl;
+
+    // Cerrar el archivo
+    archivoEntrada.close();
+  }
+  else
+  {
+    std::cerr << "Error al abrir el archivo." << std::endl;
+  }
+
   return 0;
 }
 
@@ -532,7 +577,7 @@ std::string Game::generateMessage()
 {
   std::string message = "";
 
-  message += std::to_string(this->players.size());
+  message += std::to_string(this->players.size()) += "\n";
 
   for (int i = 0; i < this->players.size(); i++)
   {
@@ -551,7 +596,7 @@ std::string Game::generateMessage()
       }
       message += std::to_string(this->players[i]->getCards()[j]->getId()) += ",";
     }
-    message += '\n';
+    message += "\n";
   }
 
   return message;
@@ -583,7 +628,7 @@ int Game::save(std::string filename)
 int Game::compressedSave(std::string filename)
 {
   std::string message = this->generateMessage();
-  std::unordered_map<char, int> frequencies;
+  std::map<char, int> frequencies;
 
   for (char c : message)
   {
@@ -598,16 +643,25 @@ int Game::compressedSave(std::string filename)
 
   std::ofstream file(filename, std::ios::binary);
 
-  file.write((char *)&uniqueChars, sizeof(uniqueChars));
+  file.write(reinterpret_cast<const char *>(&uniqueChars), sizeof(uniqueChars));
 
   for (auto pair : frequencies)
   {
-    file.write((char *)&pair.first, sizeof(pair.first));
-    file.write((char *)&pair.second, sizeof(pair.second));
+    char ci = pair.first;
+    int fi = pair.second;
+
+    file.write(&ci, sizeof(ci));
+    file.write(reinterpret_cast<const char *>(&fi), sizeof(fi));
   }
 
-  file.write((char *)&size, sizeof(size));
-  file.write((char *)&encodedMessage, sizeof(encodedMessage));
+  file.write(reinterpret_cast<const char *>(&size), sizeof(size));
+
+  for (size_t i = 0; i < encodedMessage.length(); i += 8)
+  {
+    std::string byte = encodedMessage.substr(i, 8);
+    char byteValue = static_cast<char>(std::bitset<8>(byte).to_ulong());
+    file.write(&byteValue, sizeof(byteValue));
+  }
 
   return 1;
 }

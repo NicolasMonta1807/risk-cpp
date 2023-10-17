@@ -6,7 +6,6 @@ using namespace std;
 
 int main()
 {
-
   welcome();
 
   Game *game = new Game();
