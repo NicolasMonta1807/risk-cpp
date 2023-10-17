@@ -586,7 +586,10 @@ std::string Game::generateMessage()
     {
       message += std::to_string((*this->players[i]->getTerritories())[j]->getId()) + "," + std::to_string((*this->players[i]->getTerritories())[j]->getSoldiers()) + ",";
     }
-    message += std::to_string(this->players[i]->getCards().size()) += ",";
+
+    int cardsAmount = this->players[i]->getCards().size();
+    message += (cardsAmount == 0) ? "0" : std::to_string(cardsAmount);
+
     for (int j = 0; j < this->players[i]->getCards().size(); j++)
     {
       if (j == this->players[i]->getCards().size() - 1)
@@ -598,6 +601,8 @@ std::string Game::generateMessage()
     }
     message += "\n";
   }
+
+  message += std::to_string(this->playerIds.front());
 
   return message;
 }
