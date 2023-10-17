@@ -19,7 +19,7 @@ public:
   void buildTree(const std::map<char, int> &frequencies);
   std::map<char, std::string> generateCodes();
   std::string encode(const std::string &message);
-  std::string decode(const std::string &encodedMessage);
+  std::string decode(const std::string &encodedMessage, int messageSize);
 
 private:
   void generateCodes(HuffmanNode *node, std::map<char, std::string> &codes, std::string code);

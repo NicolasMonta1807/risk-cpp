@@ -552,15 +552,14 @@ int Game::initializeFromFile(std::string filename)
     // Leer la secuencia binaria desde el archivo
     std::string binary_code;
     char byte;
+
     while (archivoEntrada.read(&byte, sizeof(byte)))
     {
-      binary_code += std::bitset<8>(byte).to_string();
+      binary_code += byte;
     }
 
     HuffmanTree *tree = new HuffmanTree(frecuencias);
-    std::string message = tree->decode(binary_code);
-
-    std::cout << message << std::endl;
+    std::string message = tree->decode(binary_code, w);
 
     // Cerrar el archivo
     archivoEntrada.close();
@@ -661,12 +660,12 @@ int Game::compressedSave(std::string filename)
 
   file.write(reinterpret_cast<const char *>(&size), sizeof(size));
 
-  for (size_t i = 0; i < encodedMessage.length(); i += 8)
+  std::string binary_code = "";
+  for (char c : encodedMessage)
   {
-    std::string byte = encodedMessage.substr(i, 8);
-    char byteValue = static_cast<char>(std::bitset<8>(byte).to_ulong());
-    file.write(&byteValue, sizeof(byteValue));
+    binary_code += c;
   }
+  file.write(binary_code.c_str(), binary_code.size());
 
   return 1;
 }

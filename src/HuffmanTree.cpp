@@ -55,30 +55,30 @@ std::string HuffmanTree::encode(const std::string &message)
 
   for (char character : message)
   {
-    std::string toWrite = codes[character];
-    if (toWrite.size() % 8 != 0)
-    {
-      toWrite += std::string(8 - toWrite.size() % 8, '0');
-    }
-    encodedMessage += toWrite;
+    encodedMessage += codes[character];
   }
 
   return encodedMessage;
 }
 
-std::string HuffmanTree::decode(const std::string &encodedMessage)
+std::string HuffmanTree::decode(const std::string &encodedMessage, int messageSize)
 {
   std::string decodedMessage = "";
   HuffmanNode *currentNode = this->root;
 
   std::map<char, std::string> codes = this->generateCodes();
 
-  for (int i = 0; i < encodedMessage.size(); i += 8)
+  int i = 0;
+  while (decodedMessage.size() != messageSize)
   {
-    std::string byte = encodedMessage.substr(i, 8);
-    for (int j = 0; j < byte.size(); j++)
+    if (currentNode->getLeft() == nullptr && currentNode->getRight() == nullptr)
     {
-      if (byte[j] == '0')
+      decodedMessage += currentNode->getCharacter();
+      currentNode = this->root;
+    }
+    else
+    {
+      if (encodedMessage[i] == '0')
       {
         currentNode = currentNode->getLeft();
       }
@@ -86,13 +86,7 @@ std::string HuffmanTree::decode(const std::string &encodedMessage)
       {
         currentNode = currentNode->getRight();
       }
-
-      if (currentNode->getLeft() == nullptr && currentNode->getRight() == nullptr)
-      {
-        decodedMessage += currentNode->getCharacter();
-        currentNode = this->root;
-        break;
-      }
+      i++;
     }
   }
 
