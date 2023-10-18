@@ -522,7 +522,34 @@ int Game::initialize()
   return 0;
 }
 
-int Game::initializeFromFile(std::string filename)
+std::string Game::readMessage(std::string filename)
+{
+  if (filename.substr(filename.length() - 4) == ".txt")
+  {
+    std::ifstream file(filename);
+    std::string message;
+    std::string line;
+    if (file.is_open())
+    {
+      while (std::getline(file, line))
+      {
+        message += line;
+      }
+      file.close();
+      return message;
+    }
+    else
+    {
+      return "";
+    }
+  }
+  else
+  {
+    return this->readFromBIN(filename);
+  }
+}
+
+std::string Game::readFromBIN(std::string filename)
 {
   std::ifstream archivoEntrada(filename, std::ios::binary);
   std::string message;
@@ -563,27 +590,47 @@ int Game::initializeFromFile(std::string filename)
 
     // Cerrar el archivo
     archivoEntrada.close();
+
+    return message;
   }
   else
   {
-    std::cerr << "Error al abrir el archivo." << std::endl;
+    return "";
+  }
+}
+
+int Game::initializeFromFile(std::string filename)
+{
+
+  if (this->initialized)
+  {
+    std::cout << "------------------------------" << std::endl;
+    std::cout << "Este juego ya ha sido empezado" << std::endl;
+    std::cout << "------------------------------" << std::endl;
+    return -1;
   }
 
-  createTerritories();
+  std::string message = this->readMessage(filename);
 
-  std::istringstream stream(message); // Crea un flujo de entrada a partir del string
+  if (message == "")
+  {
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Error al leer el archivo" << std::endl;
+    std::cout << "------------------------" << std::endl;
+    return 0;
+  }
 
+  std::istringstream stream(message);    // Crea un flujo de entrada a partir del string
   std::vector<std::string> insideTokens; // Vector para almacenar los tokens correspondientes a cada jugador
-
   std::string playerInformation;
-
   std::vector<std::string> tokens; // Vector para almacenar los tokens separados por \n
   std::string token;
+
   while (stream >> token)
   {
     tokens.push_back(token); // Agrega el token al vector
-    std::cout << token << std::endl;
   }
+
   std::vector<std::string>::iterator tokenIT = tokens.begin();
   int playerAmount = std::stoi(*tokenIT);
   tokenIT++;
@@ -613,6 +660,7 @@ int Game::initializeFromFile(std::string filename)
       insideIterator++;
       this->territories[territoryId - 1]->addSoldiers(std::stoi(*insideIterator));
     }
+
     insideIterator++;
     int cardAmount = std::stoi(*insideIterator);
     for (int i = 0; i < cardAmount; i++)
@@ -621,13 +669,16 @@ int Game::initializeFromFile(std::string filename)
       int cardId = std::stoi(*insideIterator);
       newPlayer->addCard(this->cards[cardId - 1]);
     }
+
     this->players.push_back(newPlayer);
     while (!insideTokens.empty())
     {
       insideTokens.pop_back();
     }
+
     tokenIT++;
   }
+
   int isTurn = std::stoi(*tokenIT);
   for (int i = 0; i < playerAmount; i++)
   {
@@ -638,6 +689,13 @@ int Game::initializeFromFile(std::string filename)
     }
     isTurn++;
   }
+
+  this->initialized = true;
+
+  std::cout << "--------------------------" << std::endl;
+  std::cout << "Juego cargado exitosamente" << std::endl;
+  std::cout << "--------------------------" << std::endl;
+
   return 0;
 }
 
@@ -677,19 +735,23 @@ std::string Game::generateMessage()
 
 int Game::save(std::string filename)
 {
+  if (filename == "")
+  {
+    std::cout << "-------------------------------------------" << std::endl;
+    std::cout << "No se ha especificado un nombre de archivo" << std::endl;
+    std::cout << "-------------------------------------------" << std::endl;
+    return 0;
+  }
+
   if (filename.substr(filename.length() - 4) != ".txt")
   {
+    std::cout << "-------------------------------------------" << std::endl;
     std::cout << "El nombre del archivo debe terminar en .txt" << std::endl;
-    return -1;
+    std::cout << "-------------------------------------------" << std::endl;
+    return 0;
   }
 
   std::fstream file(filename, std::ios::out);
-
-  if (filename == "")
-  {
-    std::cout << "No se ha especificado un nombre de archivo" << std::endl;
-    return -1;
-  }
 
   std::string message = this->generateMessage();
   file << message;

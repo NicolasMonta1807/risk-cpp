@@ -41,6 +41,8 @@ private:
   void setContinentOwners();
   void Fortify(int playerId);
   std::string generateMessage();
+  std::string readMessage(std::string filename);
+  std::string readFromBIN(std::string filename);
 
 public:
   Game();
