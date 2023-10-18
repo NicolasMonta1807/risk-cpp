@@ -118,13 +118,18 @@ void help(string command)
          << "inicializar" << endl
          << "  - Configura los jugadores y los territorios iniciales" << endl
          << endl
+         << "inicializar [nombre del archivo (.bin o .txt)]" << endl
+         << "  - Carga una partida guardada" << endl
+         << endl
          << "turno [numeroJugador]" << endl
          << "  - Realiza el turno del jugador. El numero debe ser el jugador del siguiente turno" << endl
          << endl
+         << "guardar [nombre del archivo (.txt)]" << endl
+         << "  - Guarda la partida en un archivo de texto" << endl
+         << "guardar_comprimido [nombre del archivo (.bin)]" << endl
+         << "  - Guarda la partida en un archivo binario" << endl
          << "salir" << endl
          << "  - Salir del juego" << endl
-         << "----------------------------------------------------" << endl
-         << "Recuerde que la partida aun no puede ser guardada" << endl
          << "----------------------------------------------------" << endl
          << "Si necesita ayuda, digite la opción ayuda" << endl
          << "Tambien puede usar la opcion ayuda <comando> para recibir informacion sobre ese comando" << endl
