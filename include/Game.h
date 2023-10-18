@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <fstream>
 #include <bitset>
+#include <sstream>
 
 #include "Player.h"
 #include "Continent.h"

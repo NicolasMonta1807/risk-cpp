@@ -525,7 +525,7 @@ int Game::initialize()
 int Game::initializeFromFile(std::string filename)
 {
   std::ifstream archivoEntrada(filename, std::ios::binary);
-
+  std::string message;
   if (archivoEntrada.is_open())
   {
     // Leer n (2 bytes) desde el archivo
@@ -559,7 +559,7 @@ int Game::initializeFromFile(std::string filename)
     }
 
     HuffmanTree *tree = new HuffmanTree(frecuencias);
-    std::string message = tree->decode(binary_code, w);
+    message = tree->decode(binary_code, w);
 
     // Cerrar el archivo
     archivoEntrada.close();
@@ -569,6 +569,75 @@ int Game::initializeFromFile(std::string filename)
     std::cerr << "Error al abrir el archivo." << std::endl;
   }
 
+  createTerritories();
+
+  std::istringstream stream(message); // Crea un flujo de entrada a partir del string
+
+  std::vector<std::string> insideTokens; // Vector para almacenar los tokens correspondientes a cada jugador
+
+  std::string playerInformation;
+
+  std::vector<std::string> tokens; // Vector para almacenar los tokens separados por \n
+  std::string token;
+  while (stream >> token)
+  {
+    tokens.push_back(token); // Agrega el token al vector
+    std::cout << token << std::endl;
+  }
+  std::vector<std::string>::iterator tokenIT = tokens.begin();
+  int playerAmount = std::stoi(*tokenIT);
+  tokenIT++;
+  for (int i = 0; i < playerAmount; i++)
+  {
+    std::string insideString = *tokenIT;
+    std::istringstream insideStream(insideString);             // Crea un flujo de entrada a partir del string
+    while (std::getline(insideStream, playerInformation, ',')) // Diferenciación por comas
+    {
+      insideTokens.push_back(playerInformation); // Agrega el token al vector
+    }
+    std::vector<std::string>::iterator insideIterator = insideTokens.begin();
+    int newPlayerId = std::stoi(*insideIterator);
+    insideIterator++;
+    std::string playerName = *insideIterator;
+    Player *newPlayer = new Player(newPlayerId, playerName);
+    insideIterator++;
+    int territoryAmount = std::stoi(*insideIterator);
+
+    for (int i = 0; i < territoryAmount; i++)
+    {
+
+      insideIterator++;
+      int territoryId = std::stoi(*insideIterator);
+      newPlayer->assignTerritory(this->territories[territoryId - 1]);
+
+      insideIterator++;
+      this->territories[territoryId - 1]->addSoldiers(std::stoi(*insideIterator));
+    }
+    insideIterator++;
+    int cardAmount = std::stoi(*insideIterator);
+    for (int i = 0; i < cardAmount; i++)
+    {
+      insideIterator++;
+      int cardId = std::stoi(*insideIterator);
+      newPlayer->addCard(this->cards[cardId - 1]);
+    }
+    this->players.push_back(newPlayer);
+    while (!insideTokens.empty())
+    {
+      insideTokens.pop_back();
+    }
+    tokenIT++;
+  }
+  int isTurn = std::stoi(*tokenIT);
+  for (int i = 0; i < playerAmount; i++)
+  {
+    this->playerIds.push(isTurn);
+    if (isTurn == playerAmount)
+    {
+      isTurn = 0;
+    }
+    isTurn++;
+  }
   return 0;
 }
 
