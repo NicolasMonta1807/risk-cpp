@@ -601,7 +601,6 @@ std::string Game::readFromBIN(std::string filename)
 
 int Game::initializeFromFile(std::string filename)
 {
-
   if (this->initialized)
   {
     std::cout << "------------------------------" << std::endl;
@@ -735,6 +734,14 @@ std::string Game::generateMessage()
 
 int Game::save(std::string filename)
 {
+  if (!this->initialized)
+  {
+    std::cout << "----------------------------------------" << std::endl;
+    std::cout << "El juego no ha sido inicializado todavía" << std::endl;
+    std::cout << "----------------------------------------" << std::endl;
+    return 0;
+  }
+
   if (filename == "")
   {
     std::cout << "-------------------------------------------" << std::endl;
@@ -762,6 +769,14 @@ int Game::save(std::string filename)
 
 int Game::compressedSave(std::string filename)
 {
+  if (!this->initialized)
+  {
+    std::cout << "----------------------------------------" << std::endl;
+    std::cout << "El juego no ha sido inicializado todavía" << std::endl;
+    std::cout << "----------------------------------------" << std::endl;
+    return 0;
+  }
+
   std::string message = this->generateMessage();
   std::map<char, int> frequencies;
 
