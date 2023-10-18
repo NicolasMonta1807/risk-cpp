@@ -10,9 +10,14 @@
 #include <iomanip>
 #include <random>
 #include <algorithm>
+#include <fstream>
+#include <bitset>
+#include <sstream>
+
 #include "Player.h"
 #include "Continent.h"
 #include "Territory.h"
+#include "HuffmanTree.h"
 
 class Game
 {
@@ -35,6 +40,9 @@ private:
   void changeOwner(Player *player, Territory *territory, int newSoldiers);
   void setContinentOwners();
   void Fortify(int playerId);
+  std::string generateMessage();
+  std::string readMessage(std::string filename);
+  std::string readFromBIN(std::string filename);
 
 public:
   Game();

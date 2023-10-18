@@ -6,15 +6,17 @@
 class Card
 {
 private:
-    char type;
-    Territory *territory;
+  int id;
+  char type;
+  Territory *territory;
 
 public:
-    Card(char type, Territory *territory);
-    char getType();
-    Territory *getTerritory();
-    void setType(char type);
-    void setTerritory(Territory *territory);
+  Card(int id, char type, Territory *territory);
+  int getId();
+  char getType();
+  Territory *getTerritory();
+  void setType(char type);
+  void setTerritory(Territory *territory);
 };
 
 #endif

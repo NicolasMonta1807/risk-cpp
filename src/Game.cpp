@@ -202,48 +202,48 @@ void Game::createTerritories()
   this->territories.push_back(NuevaGuinea);
   this->territories.push_back(AustraliaOccidental);
 
-  this->cards.push_back(new Card('s', Alaska));
-  this->cards.push_back(new Card('h', Alberta));
-  this->cards.push_back(new Card('c', AmericaCentral));
-  this->cards.push_back(new Card('s', EstadosUnidosOrientales));
-  this->cards.push_back(new Card('h', Groenlandia));
-  this->cards.push_back(new Card('c', TerritorioNoroccidental));
-  this->cards.push_back(new Card('s', Ontario));
-  this->cards.push_back(new Card('h', Quebec));
-  this->cards.push_back(new Card('c', EstadosUnidosOccidentales));
-  this->cards.push_back(new Card('s', GranBretania));
-  this->cards.push_back(new Card('h', Islandia));
-  this->cards.push_back(new Card('c', EuropaDelNorte));
-  this->cards.push_back(new Card('s', Escandinavia));
-  this->cards.push_back(new Card('h', EuropaDelSur));
-  this->cards.push_back(new Card('c', Ucrania));
-  this->cards.push_back(new Card('s', EuropaOccidental));
-  this->cards.push_back(new Card('h', Afghanistan));
-  this->cards.push_back(new Card('c', China));
-  this->cards.push_back(new Card('s', India));
-  this->cards.push_back(new Card('h', Irkutsk));
-  this->cards.push_back(new Card('c', Japon));
-  this->cards.push_back(new Card('s', Kamchatka));
-  this->cards.push_back(new Card('h', MedioOriente));
-  this->cards.push_back(new Card('c', Mongolia));
-  this->cards.push_back(new Card('s', Siam));
-  this->cards.push_back(new Card('h', Siberia));
-  this->cards.push_back(new Card('c', Ural));
-  this->cards.push_back(new Card('s', Yakutsk));
-  this->cards.push_back(new Card('h', Argentina));
-  this->cards.push_back(new Card('c', Brasil));
-  this->cards.push_back(new Card('s', Peru));
-  this->cards.push_back(new Card('h', Colombia));
-  this->cards.push_back(new Card('c', Congo));
-  this->cards.push_back(new Card('s', AfricaOriental));
-  this->cards.push_back(new Card('h', Egipto));
-  this->cards.push_back(new Card('c', Madagascar));
-  this->cards.push_back(new Card('s', AfricaDelNorte));
-  this->cards.push_back(new Card('h', AfricaDelSur));
-  this->cards.push_back(new Card('c', AustraliaOriental));
-  this->cards.push_back(new Card('s', Indonesia));
-  this->cards.push_back(new Card('h', NuevaGuinea));
-  this->cards.push_back(new Card('c', AustraliaOccidental));
+  this->cards.push_back(new Card(1, 's', Alaska));
+  this->cards.push_back(new Card(2, 'h', Alberta));
+  this->cards.push_back(new Card(3, 'c', AmericaCentral));
+  this->cards.push_back(new Card(4, 's', EstadosUnidosOrientales));
+  this->cards.push_back(new Card(5, 'h', Groenlandia));
+  this->cards.push_back(new Card(6, 'c', TerritorioNoroccidental));
+  this->cards.push_back(new Card(7, 's', Ontario));
+  this->cards.push_back(new Card(8, 'h', Quebec));
+  this->cards.push_back(new Card(9, 'c', EstadosUnidosOccidentales));
+  this->cards.push_back(new Card(10, 's', GranBretania));
+  this->cards.push_back(new Card(11, 'h', Islandia));
+  this->cards.push_back(new Card(12, 'c', EuropaDelNorte));
+  this->cards.push_back(new Card(13, 's', Escandinavia));
+  this->cards.push_back(new Card(14, 'h', EuropaDelSur));
+  this->cards.push_back(new Card(15, 'c', Ucrania));
+  this->cards.push_back(new Card(16, 's', EuropaOccidental));
+  this->cards.push_back(new Card(17, 'h', Afghanistan));
+  this->cards.push_back(new Card(18, 'c', China));
+  this->cards.push_back(new Card(19, 's', India));
+  this->cards.push_back(new Card(20, 'h', Irkutsk));
+  this->cards.push_back(new Card(21, 'c', Japon));
+  this->cards.push_back(new Card(22, 's', Kamchatka));
+  this->cards.push_back(new Card(23, 'h', MedioOriente));
+  this->cards.push_back(new Card(24, 'c', Mongolia));
+  this->cards.push_back(new Card(25, 's', Siam));
+  this->cards.push_back(new Card(26, 'h', Siberia));
+  this->cards.push_back(new Card(27, 'c', Ural));
+  this->cards.push_back(new Card(28, 's', Yakutsk));
+  this->cards.push_back(new Card(29, 'h', Argentina));
+  this->cards.push_back(new Card(30, 'c', Brasil));
+  this->cards.push_back(new Card(31, 's', Peru));
+  this->cards.push_back(new Card(32, 'h', Colombia));
+  this->cards.push_back(new Card(33, 'c', Congo));
+  this->cards.push_back(new Card(34, 's', AfricaOriental));
+  this->cards.push_back(new Card(35, 'h', Egipto));
+  this->cards.push_back(new Card(36, 'c', Madagascar));
+  this->cards.push_back(new Card(37, 's', AfricaDelNorte));
+  this->cards.push_back(new Card(38, 'h', AfricaDelSur));
+  this->cards.push_back(new Card(39, 'c', AustraliaOriental));
+  this->cards.push_back(new Card(40, 's', Indonesia));
+  this->cards.push_back(new Card(41, 'h', NuevaGuinea));
+  this->cards.push_back(new Card(42, 'c', AustraliaOccidental));
   std::random_shuffle(cards.begin(), cards.end());
 }
 
@@ -522,22 +522,283 @@ int Game::initialize()
   return 0;
 }
 
+std::string Game::readMessage(std::string filename)
+{
+  if (filename.substr(filename.length() - 4) == ".txt")
+  {
+    std::ifstream file(filename);
+    std::string message;
+    std::string line;
+    if (file.is_open())
+    {
+      while (std::getline(file, line))
+      {
+        message += line;
+      }
+      file.close();
+      return message;
+    }
+    else
+    {
+      return "";
+    }
+  }
+  else
+  {
+    return this->readFromBIN(filename);
+  }
+}
+
+std::string Game::readFromBIN(std::string filename)
+{
+  std::ifstream archivoEntrada(filename, std::ios::binary);
+  std::string message;
+  if (archivoEntrada.is_open())
+  {
+    // Leer n (2 bytes) desde el archivo
+    int n;
+    archivoEntrada.read(reinterpret_cast<char *>(&n), sizeof(n));
+
+    // Crear un mapa para almacenar los pares de caracteres y sus frecuencias
+    std::map<char, int> frecuencias;
+
+    // Leer ci y fi para cada caracter desde el archivo
+    for (int i = 0; i < n; ++i)
+    {
+      char ci;
+      int fi;
+      archivoEntrada.read(&ci, sizeof(ci));
+      archivoEntrada.read(reinterpret_cast<char *>(&fi), sizeof(fi));
+      frecuencias[ci] = fi;
+    }
+
+    // Leer w (8 bytes) desde el archivo
+    int w;
+    archivoEntrada.read(reinterpret_cast<char *>(&w), sizeof(w));
+
+    // Leer la secuencia binaria desde el archivo
+    std::string binary_code;
+    char byte;
+
+    while (archivoEntrada.read(&byte, sizeof(byte)))
+    {
+      binary_code += byte;
+    }
+
+    HuffmanTree *tree = new HuffmanTree(frecuencias);
+    message = tree->decode(binary_code, w);
+
+    // Cerrar el archivo
+    archivoEntrada.close();
+
+    return message;
+  }
+  else
+  {
+    return "";
+  }
+}
+
 int Game::initializeFromFile(std::string filename)
 {
-  std::cout << "Initializing from file: " << filename << std::endl;
+
+  if (this->initialized)
+  {
+    std::cout << "------------------------------" << std::endl;
+    std::cout << "Este juego ya ha sido empezado" << std::endl;
+    std::cout << "------------------------------" << std::endl;
+    return -1;
+  }
+
+  std::string message = this->readMessage(filename);
+
+  if (message == "")
+  {
+    std::cout << "------------------------" << std::endl;
+    std::cout << "Error al leer el archivo" << std::endl;
+    std::cout << "------------------------" << std::endl;
+    return 0;
+  }
+
+  std::istringstream stream(message);    // Crea un flujo de entrada a partir del string
+  std::vector<std::string> insideTokens; // Vector para almacenar los tokens correspondientes a cada jugador
+  std::string playerInformation;
+  std::vector<std::string> tokens; // Vector para almacenar los tokens separados por \n
+  std::string token;
+
+  while (stream >> token)
+  {
+    tokens.push_back(token); // Agrega el token al vector
+  }
+
+  std::vector<std::string>::iterator tokenIT = tokens.begin();
+  int playerAmount = std::stoi(*tokenIT);
+  tokenIT++;
+  for (int i = 0; i < playerAmount; i++)
+  {
+    std::string insideString = *tokenIT;
+    std::istringstream insideStream(insideString);             // Crea un flujo de entrada a partir del string
+    while (std::getline(insideStream, playerInformation, ',')) // Diferenciación por comas
+    {
+      insideTokens.push_back(playerInformation); // Agrega el token al vector
+    }
+    std::vector<std::string>::iterator insideIterator = insideTokens.begin();
+    int newPlayerId = std::stoi(*insideIterator);
+    insideIterator++;
+    std::string playerName = *insideIterator;
+    Player *newPlayer = new Player(newPlayerId, playerName);
+    insideIterator++;
+    int territoryAmount = std::stoi(*insideIterator);
+
+    for (int i = 0; i < territoryAmount; i++)
+    {
+
+      insideIterator++;
+      int territoryId = std::stoi(*insideIterator);
+      newPlayer->assignTerritory(this->territories[territoryId - 1]);
+
+      insideIterator++;
+      this->territories[territoryId - 1]->addSoldiers(std::stoi(*insideIterator));
+    }
+
+    insideIterator++;
+    int cardAmount = std::stoi(*insideIterator);
+    for (int i = 0; i < cardAmount; i++)
+    {
+      insideIterator++;
+      int cardId = std::stoi(*insideIterator);
+      newPlayer->addCard(this->cards[cardId - 1]);
+    }
+
+    this->players.push_back(newPlayer);
+    while (!insideTokens.empty())
+    {
+      insideTokens.pop_back();
+    }
+
+    tokenIT++;
+  }
+
+  int isTurn = std::stoi(*tokenIT);
+  for (int i = 0; i < playerAmount; i++)
+  {
+    this->playerIds.push(isTurn);
+    if (isTurn == playerAmount)
+    {
+      isTurn = 0;
+    }
+    isTurn++;
+  }
+
+  this->initialized = true;
+
+  std::cout << "--------------------------" << std::endl;
+  std::cout << "Juego cargado exitosamente" << std::endl;
+  std::cout << "--------------------------" << std::endl;
+
   return 0;
+}
+
+std::string Game::generateMessage()
+{
+  std::string message = "";
+
+  message += std::to_string(this->players.size()) += "\n";
+
+  for (int i = 0; i < this->players.size(); i++)
+  {
+    message += std::to_string(this->players[i]->getId()) + "," + this->players[i]->getName() += "," + std::to_string(this->players[i]->getTerritories()->size()) += ",";
+    for (int j = 0; j < this->players[i]->getTerritories()->size(); j++)
+    {
+      message += std::to_string((*this->players[i]->getTerritories())[j]->getId()) + "," + std::to_string((*this->players[i]->getTerritories())[j]->getSoldiers()) + ",";
+    }
+
+    int cardsAmount = this->players[i]->getCards().size();
+    message += (cardsAmount == 0) ? "0" : std::to_string(cardsAmount);
+
+    for (int j = 0; j < this->players[i]->getCards().size(); j++)
+    {
+      if (j == this->players[i]->getCards().size() - 1)
+      {
+        message += std::to_string(this->players[i]->getCards()[j]->getId());
+        break;
+      }
+      message += std::to_string(this->players[i]->getCards()[j]->getId()) += ",";
+    }
+    message += "\n";
+  }
+
+  message += std::to_string(this->playerIds.front());
+
+  return message;
 }
 
 int Game::save(std::string filename)
 {
-  std::cout << "Saving to: " << filename << std::endl;
-  return 0;
+  if (filename == "")
+  {
+    std::cout << "-------------------------------------------" << std::endl;
+    std::cout << "No se ha especificado un nombre de archivo" << std::endl;
+    std::cout << "-------------------------------------------" << std::endl;
+    return 0;
+  }
+
+  if (filename.substr(filename.length() - 4) != ".txt")
+  {
+    std::cout << "-------------------------------------------" << std::endl;
+    std::cout << "El nombre del archivo debe terminar en .txt" << std::endl;
+    std::cout << "-------------------------------------------" << std::endl;
+    return 0;
+  }
+
+  std::fstream file(filename, std::ios::out);
+
+  std::string message = this->generateMessage();
+  file << message;
+
+  file.close();
+  return 1;
 }
 
 int Game::compressedSave(std::string filename)
 {
-  std::cout << "Saving compressed to: " << filename << std::endl;
-  return 0;
+  std::string message = this->generateMessage();
+  std::map<char, int> frequencies;
+
+  for (char c : message)
+  {
+    frequencies[c]++;
+  }
+
+  HuffmanTree *tree = new HuffmanTree(frequencies);
+  int uniqueChars = frequencies.size();
+
+  int size = message.size();
+  std::string encodedMessage = tree->encode(message);
+
+  std::ofstream file(filename, std::ios::binary);
+
+  file.write(reinterpret_cast<const char *>(&uniqueChars), sizeof(uniqueChars));
+
+  for (auto pair : frequencies)
+  {
+    char ci = pair.first;
+    int fi = pair.second;
+
+    file.write(&ci, sizeof(ci));
+    file.write(reinterpret_cast<const char *>(&fi), sizeof(fi));
+  }
+
+  file.write(reinterpret_cast<const char *>(&size), sizeof(size));
+
+  std::string binary_code = "";
+  for (char c : encodedMessage)
+  {
+    binary_code += c;
+  }
+  file.write(binary_code.c_str(), binary_code.size());
+
+  return 1;
 }
 
 void Game::printAdjacentTerritories(int territory, int playerId, bool adjacentOwned)

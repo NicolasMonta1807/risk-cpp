@@ -1,11 +1,11 @@
 #include "HuffmanTree.h"
 
-HuffmanTree::HuffmanTree(const std::unordered_map<char, int> &frequencies)
+HuffmanTree::HuffmanTree(const std::map<char, int> &frequencies)
 {
   this->buildTree(frequencies);
 }
 
-void HuffmanTree::buildTree(const std::unordered_map<char, int> &frequencies)
+void HuffmanTree::buildTree(const std::map<char, int> &frequencies)
 {
   std::priority_queue<HuffmanNode *, std::vector<HuffmanNode *>, HuffmanNodeComparator> queue;
 
@@ -29,14 +29,14 @@ void HuffmanTree::buildTree(const std::unordered_map<char, int> &frequencies)
   this->root = queue.top();
 }
 
-std::unordered_map<char, std::string> HuffmanTree::generateCodes()
+std::map<char, std::string> HuffmanTree::generateCodes()
 {
-  std::unordered_map<char, std::string> codes;
+  std::map<char, std::string> codes;
   this->generateCodes(this->root, codes, "");
   return codes;
 }
 
-void HuffmanTree::generateCodes(HuffmanNode *node, std::unordered_map<char, std::string> &codes, std::string code)
+void HuffmanTree::generateCodes(HuffmanNode *node, std::map<char, std::string> &codes, std::string code)
 {
   if (node->getLeft() == nullptr && node->getRight() == nullptr)
   {
@@ -50,7 +50,7 @@ void HuffmanTree::generateCodes(HuffmanNode *node, std::unordered_map<char, std:
 
 std::string HuffmanTree::encode(const std::string &message)
 {
-  std::unordered_map<char, std::string> codes = this->generateCodes();
+  std::map<char, std::string> codes = this->generateCodes();
   std::string encodedMessage = "";
 
   for (char character : message)
@@ -59,6 +59,38 @@ std::string HuffmanTree::encode(const std::string &message)
   }
 
   return encodedMessage;
+}
+
+std::string HuffmanTree::decode(const std::string &encodedMessage, int messageSize)
+{
+  std::string decodedMessage = "";
+  HuffmanNode *currentNode = this->root;
+
+  std::map<char, std::string> codes = this->generateCodes();
+
+  int i = 0;
+  while (decodedMessage.size() != messageSize)
+  {
+    if (currentNode->getLeft() == nullptr && currentNode->getRight() == nullptr)
+    {
+      decodedMessage += currentNode->getCharacter();
+      currentNode = this->root;
+    }
+    else
+    {
+      if (encodedMessage[i] == '0')
+      {
+        currentNode = currentNode->getLeft();
+      }
+      else
+      {
+        currentNode = currentNode->getRight();
+      }
+      i++;
+    }
+  }
+
+  return decodedMessage;
 }
 
 HuffmanTree::~HuffmanTree()

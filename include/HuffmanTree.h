@@ -2,7 +2,7 @@
 #define __HUFFMAN_TREE_H__
 
 #include <queue>
-#include <unordered_map>
+#include <map>
 #include <vector>
 #include <string>
 
@@ -14,14 +14,15 @@ private:
   HuffmanNode *root;
 
 public:
-  HuffmanTree(const std::unordered_map<char, int> &frequencies);
+  HuffmanTree(const std::map<char, int> &frequencies);
   ~HuffmanTree();
-  void buildTree(const std::unordered_map<char, int> &frequencies);
-  std::unordered_map<char, std::string> generateCodes();
+  void buildTree(const std::map<char, int> &frequencies);
+  std::map<char, std::string> generateCodes();
   std::string encode(const std::string &message);
+  std::string decode(const std::string &encodedMessage, int messageSize);
 
 private:
-  void generateCodes(HuffmanNode *node, std::unordered_map<char, std::string> &codes, std::string code);
+  void generateCodes(HuffmanNode *node, std::map<char, std::string> &codes, std::string code);
   void deleteTree(HuffmanNode *node);
 };
 
