@@ -533,7 +533,7 @@ std::string Game::readMessage(std::string filename)
     {
       while (std::getline(file, line))
       {
-        message += line;
+        message += line + '\n';
       }
       file.close();
       return message;
