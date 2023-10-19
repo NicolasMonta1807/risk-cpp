@@ -713,7 +713,7 @@ std::string Game::generateMessage()
     }
 
     int cardsAmount = this->players[i]->getCards().size();
-    message += (cardsAmount == 0) ? "0" : std::to_string(cardsAmount);
+    message += (cardsAmount == 0) ? "0" : std::to_string(cardsAmount) + ",";
 
     for (int j = 0; j < this->players[i]->getCards().size(); j++)
     {
