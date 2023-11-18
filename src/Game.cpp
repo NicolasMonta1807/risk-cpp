@@ -74,7 +74,8 @@ void Game::createTerritories()
   Ural->setNeighbors({Ucrania, Afghanistan, China, Siberia});
   Yakutsk->setNeighbors({Siberia, Irkutsk, Kamchatka});
   Argentina->setNeighbors({Brasil, Peru});
-  Brasil->setNeighbors({Argentina, Peru, Colombia, AfricaDelNorte});
+  // Brasil->setNeighbors({Argentina, Peru, Colombia, AfricaDelNorte});
+  Brasil->setNeighbors({Argentina, Peru, Colombia});
   Peru->setNeighbors({Brasil, Argentina, Colombia});
   Colombia->setNeighbors({Brasil, Peru, AmericaCentral});
   Congo->setNeighbors({AfricaOriental, AfricaDelSur, AfricaDelNorte});
@@ -338,7 +339,7 @@ void Game::allocateSoldiers()
   std::vector<int>::iterator TerritoryAuxIt;
   int territory = 0;
 
-  for (int i = 0; i < 6; i++)
+  for (int i = 0; i < 9; i++)
   {
     std::cout << "-----------------------" << std::endl;
     std::cout << "Es el turno de: " << (*PlayerIt)->getName() << std::endl;
@@ -998,6 +999,79 @@ void Game::setContinentOwners()
   }
 }
 
+void Game::conquerCost(int playerId, int territory)
+{
+  int sourceIndex = territory - 1;
+  Territory *source = this->territories[sourceIndex];
+
+  std::vector<bool> visited(42, false);
+  std::vector<int> predecesors(42, -1);
+
+  std::queue<int> q;
+  q.push(sourceIndex);
+  visited[sourceIndex] = true;
+
+  bool pathFound = false;
+  int nearestTerritory = -1;
+
+  while (!q.empty() && !pathFound)
+  {
+    int current = q.front();
+    q.pop();
+
+    std::vector<Territory *> *neighbors = this->territories[current]->getNeighbors();
+    for (int i = 0; i < neighbors->size(); i++)
+    {
+      Territory *neighbor = (*neighbors)[i];
+      if (!visited[neighbor->getId() - 1])
+      {
+        visited[neighbor->getId() - 1] = true;
+        predecesors[neighbor->getId() - 1] = current;
+        q.push(neighbor->getId() - 1);
+      }
+      if (this->players[playerId - 1]->isOwned(neighbor))
+      {
+        pathFound = true;
+        nearestTerritory = neighbor->getId() - 1;
+        break;
+      }
+    }
+  }
+
+  if (nearestTerritory != -1)
+  {
+    std::vector<int> path;
+    int current = nearestTerritory;
+    while (current != -1)
+    {
+      path.push_back(current);
+      current = predecesors[current];
+    }
+
+    int totalCost = 0;
+    std::cout << "-----------------------------------" << std::endl;
+    std::cout << "El camino es: "
+              << this->territories[nearestTerritory]->getName()
+              << "(" << this->territories[nearestTerritory]->getId() << ")"
+              << " - ";
+    for (int i = 1; i < path.size(); i++)
+    {
+      totalCost += this->territories[path[i]]->getSoldiers();
+      std::cout << this->territories[path[i]]->getName()
+                << "(" << this->territories[path[i]]->getId() << ")";
+      if (i != path.size() - 1)
+        std::cout << " - ";
+    }
+    std::cout << std::endl;
+    std::cout << "El costo de conquista es: " << totalCost << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+  }
+  else
+  {
+    std::cout << "No hay un camino para conquistar este territorio" << std::endl;
+  }
+}
+
 void Game::Attack(int playerId)
 {
   char option;
@@ -1012,6 +1086,48 @@ void Game::Attack(int playerId)
     {
     case 's':
     {
+
+      int subOption = -1;
+      while (subOption != 1 && subOption != 2)
+      {
+        std::cout << "1. Estrategias de ataque" << std::endl;
+        std::cout << "2. Continuar" << std::endl;
+        std::cout << "Ingrese una opcion:";
+        std::cin >> subOption;
+      }
+
+      if (subOption == 1)
+      {
+        subOption = -1;
+        while (subOption != 1 && subOption != 2)
+        {
+          std::cout << "1. Costo de conquista a un territorio" << std::endl;
+          std::cout << "2. Conquista mas barata" << std::endl;
+          std::cout << "Ingrese una opcion:";
+          std::cin >> subOption;
+        }
+        switch (subOption)
+        {
+        case 1:
+        {
+          printMap();
+          int territory = 0;
+          while (territory == 0 || territory > 42)
+          {
+            std::cout << "Ingrese el numero del territorio que desea atacar: ";
+            std::cin >> territory;
+          }
+          this->conquerCost(playerId, territory);
+          break;
+        }
+        case 2:
+        {
+          // this->cheapestConquer(playerId);
+          break;
+        }
+        }
+      }
+
       int attackFrom;
       int attackTo;
       this->players[playerId - 1]->printOwnedTerritories();
@@ -1114,19 +1230,22 @@ void Game::Attack(int playerId)
         std::cout << "Este territorio no está disponible para atacar" << std::endl;
       }
     }
-
     break;
     case 'n':
+    {
       std::cout << "-----------------------" << std::endl;
       std::cout << " Ha escogido no atacar " << std::endl;
       std::cout << "-----------------------" << std::endl;
       return;
       break;
+    }
     default:
+    {
       std::cout << "Por favor ingrese una opcion valida" << std::endl;
       std::cout << "¿Desea atacar a otro jugador?: (S/N)";
       std::cin >> option;
       break;
+    }
     }
   }
 }

@@ -44,6 +44,9 @@ private:
   std::string readMessage(std::string filename);
   std::string readFromBIN(std::string filename);
 
+  void conquerCost(int playerId, int territoryId);
+  void cheapestConquer(int playerId);
+
 public:
   Game();
   int initialize();
