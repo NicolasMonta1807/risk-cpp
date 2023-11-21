@@ -245,7 +245,9 @@ void Game::createTerritories()
   this->cards.push_back(new Card(40, 's', Indonesia));
   this->cards.push_back(new Card(41, 'h', NuevaGuinea));
   this->cards.push_back(new Card(42, 'c', AustraliaOccidental));
-  std::random_shuffle(cards.begin(), cards.end());
+
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::shuffle(cards.begin(), cards.end(), std::default_random_engine(seed));
 }
 
 Game::Game()
@@ -1084,27 +1086,45 @@ void Game::cheapestConquer(int playerId)
     std::vector<Territory *> *neighbors = this->territories[i]->getNeighbors();
     for (int j = 0; j < neighbors->size(); j++)
     {
+      bool hasEnoughSoldiers = this->territories[i]->getSoldiers() > 2;
+      int soldiersDiff = this->territories[i]->getSoldiers() - (*neighbors)[j]->getSoldiers();
+
       if (this->players[playerId - 1]->isOwned((*neighbors)[j]))
         g->addEdge(this->territories[i], (*neighbors)[j], 0);
-      else
-        g->addEdge(this->territories[i], (*neighbors)[j], (*neighbors)[j]->getSoldiers());
+      else if (hasEnoughSoldiers && soldiersDiff > 0)
+        g->addEdge(this->territories[i], (*neighbors)[j], soldiersDiff);
     }
   }
 
   std::vector<Territory *> *playerTerritories = this->players[playerId - 1]->getTerritories();
   int cheapest = INF;
-  std::vector<Territory *> current_cheapest = std::vector<Territory *>();
+  std::vector<Territory *> current_cheapest(42, nullptr);
   for (int i = 0; i < playerTerritories->size(); i++)
   {
     std::vector<std::vector<Territory *>> paths = g->Dijkstra((*playerTerritories)[i]);
     for (int j = 0; j < paths.size(); j++)
     {
+      if (this->players[playerId - 1]->isOwned(this->territories[j]))
+        continue;
+
       int cost = 0;
+      bool hasOwn = false;
+
       for (int k = 1; k < paths[j].size(); k++)
       {
+        if (this->players[playerId - 1]->isOwned(paths[j][k]))
+        {
+          hasOwn = true;
+          break;
+        }
+
         cost += g->findEdge(paths[j][k - 1], paths[j][k]);
       }
-      if (cost < cheapest)
+
+      if (hasOwn)
+        continue;
+
+      if (cost < cheapest && paths[j].size() > 1 && paths[j].size() < current_cheapest.size())
       {
         cheapest = cost;
         current_cheapest = paths[j];
@@ -1153,7 +1173,7 @@ void Game::Attack(int playerId)
       {
         std::cout << "1. Estrategias de ataque" << std::endl;
         std::cout << "2. Continuar" << std::endl;
-        std::cout << "Ingrese una opcion:";
+        std::cout << "Ingrese una opcion: ";
         std::cin >> subOption;
       }
 
@@ -1164,7 +1184,7 @@ void Game::Attack(int playerId)
         {
           std::cout << "1. Costo de conquista a un territorio" << std::endl;
           std::cout << "2. Conquista mas barata" << std::endl;
-          std::cout << "Ingrese una opcion:";
+          std::cout << "Ingrese una opcion: ";
           std::cin >> subOption;
         }
         switch (subOption)
