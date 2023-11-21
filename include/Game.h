@@ -18,6 +18,7 @@
 #include "Continent.h"
 #include "Territory.h"
 #include "HuffmanTree.h"
+#include "Graph.h"
 
 class Game
 {

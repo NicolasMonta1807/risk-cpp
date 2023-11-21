@@ -1072,6 +1072,67 @@ void Game::conquerCost(int playerId, int territory)
   }
 }
 
+void Game::cheapestConquer(int playerId)
+{
+  Graph<Territory *, int> *g = new Graph<Territory *, int>(true);
+
+  for (int i = 0; i < this->territories.size(); i++)
+    g->addVertex(this->territories[i]);
+
+  for (int i = 0; i < this->territories.size(); i++)
+  {
+    std::vector<Territory *> *neighbors = this->territories[i]->getNeighbors();
+    for (int j = 0; j < neighbors->size(); j++)
+    {
+      if (this->players[playerId - 1]->isOwned((*neighbors)[j]))
+        g->addEdge(this->territories[i], (*neighbors)[j], 0);
+      else
+        g->addEdge(this->territories[i], (*neighbors)[j], (*neighbors)[j]->getSoldiers());
+    }
+  }
+
+  std::vector<Territory *> *playerTerritories = this->players[playerId - 1]->getTerritories();
+  int cheapest = INF;
+  std::vector<Territory *> current_cheapest = std::vector<Territory *>();
+  for (int i = 0; i < playerTerritories->size(); i++)
+  {
+    std::vector<std::vector<Territory *>> paths = g->Dijkstra((*playerTerritories)[i]);
+    for (int j = 0; j < paths.size(); j++)
+    {
+      int cost = 0;
+      for (int k = 1; k < paths[j].size(); k++)
+      {
+        cost += g->findEdge(paths[j][k - 1], paths[j][k]);
+      }
+      if (cost < cheapest)
+      {
+        cheapest = cost;
+        current_cheapest = paths[j];
+      }
+    }
+  }
+
+  std::cout << "------------------------------" << std::endl;
+  std::cout << "La conquista mas barata es: ";
+  for (int i = 0; i < current_cheapest.size(); i++)
+  {
+
+    if (this->players[playerId - 1]->isOwned(current_cheapest[i]))
+    {
+      std::cout << current_cheapest[i]->getName() << " (Propio) - ";
+    }
+    else
+    {
+      if (i == current_cheapest.size() - 1)
+        std::cout << current_cheapest[i]->getName() << "(" << current_cheapest[i]->getSoldiers() << ")" << std::endl;
+      else
+        std::cout << current_cheapest[i]->getName() << "(" << current_cheapest[i]->getSoldiers() << ") - ";
+    }
+  }
+  std::cout << "El costo total es: " << cheapest << std::endl;
+  std::cout << "------------------------------" << std::endl;
+}
+
 void Game::Attack(int playerId)
 {
   char option;
@@ -1122,7 +1183,7 @@ void Game::Attack(int playerId)
         }
         case 2:
         {
-          // this->cheapestConquer(playerId);
+          this->cheapestConquer(playerId);
           break;
         }
         }
