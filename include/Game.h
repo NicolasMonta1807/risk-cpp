@@ -13,11 +13,13 @@
 #include <fstream>
 #include <bitset>
 #include <sstream>
+#include <chrono>
 
 #include "Player.h"
 #include "Continent.h"
 #include "Territory.h"
 #include "HuffmanTree.h"
+#include "Graph.h"
 
 class Game
 {
@@ -43,6 +45,9 @@ private:
   std::string generateMessage();
   std::string readMessage(std::string filename);
   std::string readFromBIN(std::string filename);
+
+  void conquerCost(int playerId, int territoryId);
+  void cheapestConquer(int playerId);
 
 public:
   Game();
