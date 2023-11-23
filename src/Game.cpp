@@ -75,7 +75,6 @@ void Game::createTerritories()
   Yakutsk->setNeighbors({Siberia, Irkutsk, Kamchatka});
   Argentina->setNeighbors({Brasil, Peru});
   Brasil->setNeighbors({Argentina, Peru, Colombia, AfricaDelNorte});
-  Brasil->setNeighbors({Argentina, Peru, Colombia});
   Peru->setNeighbors({Brasil, Argentina, Colombia});
   Colombia->setNeighbors({Brasil, Peru, AmericaCentral});
   Congo->setNeighbors({AfricaOriental, AfricaDelSur, AfricaDelNorte});
