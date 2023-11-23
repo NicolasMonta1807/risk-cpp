@@ -74,7 +74,7 @@ void Game::createTerritories()
   Ural->setNeighbors({Ucrania, Afghanistan, China, Siberia});
   Yakutsk->setNeighbors({Siberia, Irkutsk, Kamchatka});
   Argentina->setNeighbors({Brasil, Peru});
-  // Brasil->setNeighbors({Argentina, Peru, Colombia, AfricaDelNorte});
+  Brasil->setNeighbors({Argentina, Peru, Colombia, AfricaDelNorte});
   Brasil->setNeighbors({Argentina, Peru, Colombia});
   Peru->setNeighbors({Brasil, Argentina, Colombia});
   Colombia->setNeighbors({Brasil, Peru, AmericaCentral});
@@ -85,7 +85,7 @@ void Game::createTerritories()
   AfricaDelNorte->setNeighbors({Egipto, EuropaDelSur, AfricaOriental, Congo, Brasil, EuropaOccidental});
   AfricaDelSur->setNeighbors({Congo, AfricaOriental, Egipto, Madagascar});
   AustraliaOriental->setNeighbors({Indonesia, NuevaGuinea});
-  Indonesia->setNeighbors({AustraliaOriental, NuevaGuinea, Siam});
+  Indonesia->setNeighbors({AustraliaOccidental, NuevaGuinea, Siam});
   NuevaGuinea->setNeighbors({AustraliaOriental, Indonesia, AustraliaOccidental});
   AustraliaOccidental->setNeighbors({NuevaGuinea, Indonesia});
 
@@ -1070,7 +1070,9 @@ void Game::conquerCost(int playerId, int territory)
   }
   else
   {
+    std::cout << "------------------------------------------------" << std::endl;
     std::cout << "No hay un camino para conquistar este territorio" << std::endl;
+    std::cout << "------------------------------------------------" << std::endl;
   }
 }
 
@@ -1086,13 +1088,23 @@ void Game::cheapestConquer(int playerId)
     std::vector<Territory *> *neighbors = this->territories[i]->getNeighbors();
     for (int j = 0; j < neighbors->size(); j++)
     {
-      bool hasEnoughSoldiers = this->territories[i]->getSoldiers() > 2;
-      int soldiersDiff = this->territories[i]->getSoldiers() - (*neighbors)[j]->getSoldiers();
+      if (this->players[playerId - 1]->isOwned(this->territories[i]))
+      {
+        if (this->players[playerId - 1]->isOwned((*neighbors)[j]))
+        {
 
-      if (this->players[playerId - 1]->isOwned((*neighbors)[j]))
-        g->addEdge(this->territories[i], (*neighbors)[j], 0);
-      else if (hasEnoughSoldiers && soldiersDiff > 0)
-        g->addEdge(this->territories[i], (*neighbors)[j], soldiersDiff);
+          g->addEdge(this->territories[i], (*neighbors)[j], 0);
+          continue;
+        }
+
+        bool hasEnoughSoldiers = this->territories[i]->getSoldiers() > 2;
+        int soldiersDiff = this->territories[i]->getSoldiers() - (*neighbors)[j]->getSoldiers();
+
+        if (hasEnoughSoldiers && soldiersDiff > 0)
+          g->addEdge(this->territories[i], (*neighbors)[j], (*neighbors)[j]->getSoldiers());
+        else
+          continue;
+      }
     }
   }
 
@@ -1124,10 +1136,23 @@ void Game::cheapestConquer(int playerId)
       if (hasOwn)
         continue;
 
-      if (cost < cheapest && paths[j].size() > 1 && paths[j].size() < current_cheapest.size())
+      if (
+          cost <= cheapest && paths[j].size() > 1 &&
+          paths[j].size() <= current_cheapest.size())
       {
-        cheapest = cost;
-        current_cheapest = paths[j];
+        if (current_cheapest[0] != nullptr)
+        {
+          if (paths[j][0]->getSoldiers() > current_cheapest[0]->getSoldiers())
+          {
+            cheapest = cost;
+            current_cheapest = paths[j];
+          }
+        }
+        else
+        {
+          cheapest = cost;
+          current_cheapest = paths[j];
+        }
       }
     }
   }
